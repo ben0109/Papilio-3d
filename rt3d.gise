@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<generated_project xmlns="http://www.xilinx.com/XMLSchema" xmlns:xil_pn="http://www.xilinx.com/XMLSchema">
+
+  <!--                                                          -->
+
+  <!--             For tool use only. Do not edit.              -->
+
+  <!--                                                          -->
+
+  <!-- ProjectNavigator created generated project file.         -->
+
+  <!-- For use in tracking generated file and other information -->
+
+  <!-- allowing preservation of process status.                 -->
+
+  <!--                                                          -->
+
+  <!-- Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved. -->
+
+  <version xmlns="http://www.xilinx.com/XMLSchema">11.1</version>
+
+  <sourceproject xmlns="http://www.xilinx.com/XMLSchema" xil_pn:fileType="FILE_XISE" xil_pn:name="rt3d.xise"/>
+
+  <files xmlns="http://www.xilinx.com/XMLSchema">
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="_ngo"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/map.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/xst.xmsgs"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="draw_pipeline_stx_beh.prj"/>
+    <file xil_pn:fileType="FILE_LOG" xil_pn:name="fuse.log"/>
+    <file xil_pn:fileType="FILE_LOG" xil_pn:name="ipcore_dir/coregen.log"/>
+    <file xil_pn:fileType="FILE_USERDOC" xil_pn:name="ipcore_dir/divider_readme.txt"/>
+    <file xil_pn:fileType="FILE_USERDOC" xil_pn:name="ipcore_dir/divider_small_readme.txt"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="isim"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_CMD" xil_pn:name="isim.cmd"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_LOG" xil_pn:name="isim.log"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="matrix.prj"/>
+    <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="matrix.stx"/>
+    <file xil_pn:fileType="FILE_XST" xil_pn:name="matrix.xst"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="matrix_isim_beh.exe"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="matrix_tb_isim_beh.exe"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="mult_acc_stx_beh.prj"/>
+    <file xil_pn:fileType="FILE_CMD_LOG" xil_pn:name="points_ram.cmd_log"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_LSO" xil_pn:name="points_ram.lso"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGC" xil_pn:name="points_ram.ngc"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGR" xil_pn:name="points_ram.ngr"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="points_ram.prj"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_STX" xil_pn:name="points_ram.stx"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_REPORT" xil_pn:name="points_ram.syr"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST" xil_pn:name="points_ram.xst"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="points_ram_isim_beh.exe"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="points_ram_xst.xrpt"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="points_transform_stx_beh.prj"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="points_transform_tb_isim_beh.exe"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="points_transform_tb_stx_beh.prj"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGDBUILD_LOG" xil_pn:name="transform_pipeline.bld"/>
+    <file xil_pn:fileType="FILE_CMD_LOG" xil_pn:name="transform_pipeline.cmd_log"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_LSO" xil_pn:name="transform_pipeline.lso"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGC" xil_pn:name="transform_pipeline.ngc"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGD" xil_pn:name="transform_pipeline.ngd"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGR" xil_pn:name="transform_pipeline.ngr"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="transform_pipeline.prj"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_STX" xil_pn:name="transform_pipeline.stx"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_REPORT" xil_pn:name="transform_pipeline.syr"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST" xil_pn:name="transform_pipeline.xst"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="transform_pipeline_isim_beh.exe"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_MAP_REPORT" xil_pn:name="transform_pipeline_map.map" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_MAP_REPORT" xil_pn:name="transform_pipeline_map.mrp" xil_pn:subbranch="Map"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGM" xil_pn:name="transform_pipeline_map.ngm" xil_pn:subbranch="Map"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="transform_pipeline_map.xrpt"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="transform_pipeline_ngdbuild.xrpt"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="transform_pipeline_stx_beh.prj"/>
+    <file xil_pn:fileType="FILE_HTML" xil_pn:name="transform_pipeline_summary.html"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="transform_pipeline_tb_beh.prj"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="transform_pipeline_tb_isim_beh.exe"/>
+    <file xil_pn:fileType="FILE_ISIM_MISC" xil_pn:name="transform_pipeline_tb_isim_beh.wdb"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="transform_pipeline_xst.xrpt"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="triangle_finder_stx_beh.prj"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="triangle_finder_tb_isim_beh.exe"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="triangle_transform_stx_beh.prj"/>
+    <file xil_pn:fileType="FILE_FITTER_REPORT" xil_pn:name="webtalk_pn.xml"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_INI" xil_pn:name="xilinxsim.ini"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="xlnx_auto_0_xdb"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="xst"/>
+  </files>
+
+  <transforms xmlns="http://www.xilinx.com/XMLSchema">
+    <transform xil_pn:end_ts="1347913964" xil_pn:name="TRAN_copyInitialToAbstractSimulation" xil_pn:start_ts="1347913964">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1348083364" xil_pn:in_ck="659391841607242579" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1348083364">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="OutputChanged"/>
+      <outfile xil_pn:name="buffer_clear.vhd"/>
+      <outfile xil_pn:name="draw_pipeline.vhd"/>
+      <outfile xil_pn:name="line_buffer.vhdl"/>
+      <outfile xil_pn:name="line_drawer.vhdl"/>
+      <outfile xil_pn:name="mult_acc.vhd"/>
+      <outfile xil_pn:name="points_ram.vhd"/>
+      <outfile xil_pn:name="points_transform.vhd"/>
+      <outfile xil_pn:name="points_transform_tb.vhd"/>
+      <outfile xil_pn:name="test_matrix.vhd"/>
+      <outfile xil_pn:name="test_screen_matrix.vhd"/>
+      <outfile xil_pn:name="transform_pipeline.vhd"/>
+      <outfile xil_pn:name="transform_pipeline_tb.vhd"/>
+      <outfile xil_pn:name="triangle_finder.vhd"/>
+      <outfile xil_pn:name="triangle_finder_tb.vhd"/>
+      <outfile xil_pn:name="triangle_ram.vhd"/>
+      <outfile xil_pn:name="triangle_transform.vhd"/>
+      <outfile xil_pn:name="z_buffer.vhdl"/>
+    </transform>
+    <transform xil_pn:end_ts="1347997336" xil_pn:name="TRAN_xawsToSimhdl" xil_pn:prop_ck="-2220533751049777764" xil_pn:start_ts="1347997336">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1347997336" xil_pn:name="TRAN_schematicsToHdlSim" xil_pn:prop_ck="-7449814077911164390" xil_pn:start_ts="1347997336">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1347913964" xil_pn:in_ck="-8018828283636773740" xil_pn:name="TRAN_regenerateCoresSim" xil_pn:prop_ck="-8204090312292238829" xil_pn:start_ts="1347913964">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForProperties"/>
+      <outfile xil_pn:name="ipcore_dir/divider_small.ngc"/>
+      <outfile xil_pn:name="ipcore_dir/divider_small.vhd"/>
+    </transform>
+    <transform xil_pn:end_ts="1348083364" xil_pn:in_ck="659391841607242579" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1348083364">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="OutputChanged"/>
+      <outfile xil_pn:name="buffer_clear.vhd"/>
+      <outfile xil_pn:name="draw_pipeline.vhd"/>
+      <outfile xil_pn:name="line_buffer.vhdl"/>
+      <outfile xil_pn:name="line_drawer.vhdl"/>
+      <outfile xil_pn:name="mult_acc.vhd"/>
+      <outfile xil_pn:name="points_ram.vhd"/>
+      <outfile xil_pn:name="points_transform.vhd"/>
+      <outfile xil_pn:name="points_transform_tb.vhd"/>
+      <outfile xil_pn:name="test_matrix.vhd"/>
+      <outfile xil_pn:name="test_screen_matrix.vhd"/>
+      <outfile xil_pn:name="transform_pipeline.vhd"/>
+      <outfile xil_pn:name="transform_pipeline_tb.vhd"/>
+      <outfile xil_pn:name="triangle_finder.vhd"/>
+      <outfile xil_pn:name="triangle_finder_tb.vhd"/>
+      <outfile xil_pn:name="triangle_ram.vhd"/>
+      <outfile xil_pn:name="triangle_transform.vhd"/>
+      <outfile xil_pn:name="z_buffer.vhdl"/>
+    </transform>
+    <transform xil_pn:end_ts="1348083375" xil_pn:in_ck="-5146307749639469737" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="-9107352730585494568" xil_pn:start_ts="1348083364">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForInputs"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="InputChanged"/>
+      <status xil_pn:value="OutputChanged"/>
+      <outfile xil_pn:name="fuse.log"/>
+      <outfile xil_pn:name="isim"/>
+      <outfile xil_pn:name="isim.log"/>
+      <outfile xil_pn:name="transform_pipeline_tb_beh.prj"/>
+      <outfile xil_pn:name="transform_pipeline_tb_isim_beh.exe"/>
+      <outfile xil_pn:name="xilinxsim.ini"/>
+    </transform>
+    <transform xil_pn:end_ts="1348083375" xil_pn:in_ck="-6210986662874450646" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="675988455967298053" xil_pn:start_ts="1348083375">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForPredecessor"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
+      <outfile xil_pn:name="isim.cmd"/>
+      <outfile xil_pn:name="isim.log"/>
+      <outfile xil_pn:name="transform_pipeline_tb_isim_beh.wdb"/>
+    </transform>
+    <transform xil_pn:end_ts="1347394610" xil_pn:name="TRAN_copyInitialToXSTAbstractSynthesis" xil_pn:start_ts="1347394610">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1348085190" xil_pn:name="TRAN_schematicsToHdl" xil_pn:prop_ck="-3910839889381994670" xil_pn:start_ts="1348085190">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1348085190" xil_pn:in_ck="-8018828283636773740" xil_pn:name="TRAN_regenerateCores" xil_pn:prop_ck="-485758505179341631" xil_pn:start_ts="1348085190">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="ipcore_dir/divider.ngc"/>
+      <outfile xil_pn:name="ipcore_dir/divider.vhd"/>
+    </transform>
+    <transform xil_pn:end_ts="1348085190" xil_pn:in_ck="-4552394903250716654" xil_pn:name="TRAN_SubProjectAbstractToPreProxy" xil_pn:start_ts="1348085190">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1348085190" xil_pn:name="TRAN_xawsTohdl" xil_pn:prop_ck="-36222836245473452" xil_pn:start_ts="1348085190">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1348085190" xil_pn:in_ck="-4552394903250716654" xil_pn:name="TRAN_SubProjectPreToStructuralProxy" xil_pn:prop_ck="250970745955965653" xil_pn:start_ts="1348085190">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1348085190" xil_pn:name="TRAN_platgen" xil_pn:prop_ck="-4208439954998477173" xil_pn:start_ts="1348085190">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1348085233" xil_pn:in_ck="-4023577306109052398" xil_pn:name="TRANEXT_xstsynthesize_spartan6" xil_pn:prop_ck="-4325266549549240870" xil_pn:start_ts="1348085190">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
+      <outfile xil_pn:name="points_ram.ngr"/>
+      <outfile xil_pn:name="transform_pipeline.lso"/>
+      <outfile xil_pn:name="transform_pipeline.ngc"/>
+      <outfile xil_pn:name="transform_pipeline.ngr"/>
+      <outfile xil_pn:name="transform_pipeline.prj"/>
+      <outfile xil_pn:name="transform_pipeline.stx"/>
+      <outfile xil_pn:name="transform_pipeline.syr"/>
+      <outfile xil_pn:name="transform_pipeline.xst"/>
+      <outfile xil_pn:name="transform_pipeline_stx_beh.prj"/>
+      <outfile xil_pn:name="transform_pipeline_tb_beh.prj"/>
+      <outfile xil_pn:name="transform_pipeline_xst.xrpt"/>
+      <outfile xil_pn:name="webtalk_pn.xml"/>
+      <outfile xil_pn:name="xst"/>
+    </transform>
+    <transform xil_pn:end_ts="1348085233" xil_pn:name="TRAN_compileBCD2" xil_pn:prop_ck="1473192050209698057" xil_pn:start_ts="1348085233">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1348085248" xil_pn:in_ck="-8180995043704756183" xil_pn:name="TRANEXT_ngdbuild_FPGA" xil_pn:prop_ck="4670740607235484716" xil_pn:start_ts="1348085233">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_ngo"/>
+      <outfile xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+      <outfile xil_pn:name="transform_pipeline.bld"/>
+      <outfile xil_pn:name="transform_pipeline.ngd"/>
+      <outfile xil_pn:name="transform_pipeline_ngdbuild.xrpt"/>
+    </transform>
+    <transform xil_pn:end_ts="1348085484" xil_pn:in_ck="-6142047102962181544" xil_pn:name="TRANEXT_map_spartan6" xil_pn:prop_ck="1448924893915930207" xil_pn:start_ts="1348085248">
+      <status xil_pn:value="FailedRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="_xmsgs/map.xmsgs"/>
+      <outfile xil_pn:name="transform_pipeline_map.map"/>
+      <outfile xil_pn:name="transform_pipeline_map.mrp"/>
+      <outfile xil_pn:name="transform_pipeline_map.ngm"/>
+      <outfile xil_pn:name="transform_pipeline_map.xrpt"/>
+    </transform>
+  </transforms>
+
+</generated_project>

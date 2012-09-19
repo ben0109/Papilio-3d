@@ -1,0 +1,363 @@
+<html>
+	<head>
+		<title>3d</title>
+		<script type="text/javascript">
+			/***************************************************************/
+			/* fixed points operations                                     */
+			/***************************************************************/
+
+			// from -1024 to 1023.99, with a fixed precision of 1/256
+			const intBits = 10;
+			const fracBits = 8;
+
+			var mask = (1<<(intBits+fracBits))-1;
+			var sign = (1<<(intBits+fracBits-1));
+			var sign_mask = ~mask;
+
+			function fromNum(n)
+			{
+				var c = (n*(1<<fracBits))&mask;
+				if (c&sign) { c |= sign_mask; }
+				return c;
+			}
+
+			function round(a)
+			{
+				return a>>fracBits;
+			}
+
+			function add(a,b)
+			{
+				var c = (a+b)&mask;
+				if (c&sign) { c |= sign_mask; }
+				return c;
+			}
+
+			function sub(a,b)
+			{
+				var c = (a-b)&mask;
+				if (c&sign) { c |= sign_mask; }
+				return c;
+			}
+
+			function mul(a,b)
+			{
+				if (a&sign) { a |= sign_mask; }
+				if (b&sign) { b |= sign_mask; }
+				var c = ((a*b) >> fracBits)&mask;
+				if (c&sign) { c |= sign_mask; }
+				return c;
+			}
+
+			function div(a,b)
+			{
+				if (a&sign) { a |= sign_mask; }
+				if (b&sign) { b |= sign_mask; }
+				var c = ((a<<fracBits) / b)&mask;
+				if (c&sign) { c |= sign_mask; }
+				return c;
+			}
+
+			/******************************************************************/
+			/* matrix operations                                              */
+			/* note: we use floating point arithmetic, and convert in the end */
+			/******************************************************************/
+
+			function matrix_mult(a,b)
+			{
+				var r = [];
+				for (var i=0; i<4; i++) {
+					r[i] = [];
+					for (var j=0; j<4; j++) {
+						r[i][j] = a[i][0]*b[0][j] + a[i][1]*b[1][j] + a[i][2]*b[2][j] + a[i][3]*b[3][j];
+					}
+				}
+				return r;
+			}
+
+			function identity_matrix()
+			{
+				var r = [];
+				for (var i=0; i<4; i++) {
+					r[i] = [];
+					for (var j=0; j<4; j++) {
+						r[i][j] = (i==j)?1:0;
+					}
+				}
+				return r;
+			}
+
+			function translation_matrix(dx,dy,dz)
+			{
+				var r = identity_matrix();
+				r[0][3] = dx;
+				r[1][3] = dy;
+				r[2][3] = dz;
+				return r;
+			}
+
+			function rotation_matrix(x,y,z,angle)
+			{
+				var r = Math.sqrt(x*x+y*y+z*z);
+				x /= r;
+				y /= r;
+				z /= r;
+
+				var c = Math.cos(angle);
+				var s = Math.sin(angle);
+
+				var r = [];
+				for (var i=0; i<4; i++) {
+					r[i] = [];
+					for (var j=0; j<4; j++) {
+						r[i][j] = 0;
+					}
+				}
+				r[0][0] = x*x*(1-c) + c;
+				r[0][1] = x*y*(1-c) - z*s;
+				r[0][2] = x*z*(1-c) + y*s;
+
+				r[1][0] = y*x*(1-c) + z*s;
+				r[1][1] = y*y*(1-c) + c;
+				r[1][2] = y*z*(1-c) - x*s;
+
+				r[2][0] = z*x*(1-c) - y*s;
+				r[2][1] = z*y*(1-c) + x*s;
+				r[2][2] = z*z*(1-c) + c;
+
+				r[3][3] = 1;
+
+				return r;
+			}
+
+			// frustum matrix
+			function projection_matrix(zNear,zFar)
+			{
+				var matrix = [];
+				for (var i=0; i<4; i++) {
+					matrix[i] = [];
+					for (var j=0; j<4; j++) {
+						matrix[i][j] = 0;
+					}
+				}
+				matrix[0][0] = zNear;
+				matrix[1][1] = zNear;
+				matrix[2][2] = (zFar+zNear)/(zNear-zFar);
+				matrix[2][3] = (2*zFar*zNear)/(zNear-zFar);
+				matrix[3][2] = -1;
+
+				return matrix;
+			}
+
+			// converts a matrix to the fixed point format
+			function conv_matrix(matrix)
+			{
+				for (var i=0; i<4; i++) {
+					for (var j=0; j<4; j++) {
+						matrix[i][j] = fromNum(matrix[i][j]);
+					}
+				}
+			}
+
+			/******************************************************************/
+			/* transform raw geometry data into screen coordinates points     */
+			/* and easy to render triangles                                   */
+			/******************************************************************/
+
+			// apply the projection matrix, multiply by 128 to be adequate for a 256*256 display
+			function transform_points(matrix, points)
+			{
+				var screen_points = [];
+				for (var i in points) {
+					var p = points[i];
+					var x = add(add(add(mul(matrix[0][0],p.x), mul(matrix[0][1],p.y)), mul(matrix[0][2],p.z)), matrix[0][3]);
+					var y = add(add(add(mul(matrix[1][0],p.x), mul(matrix[1][1],p.y)), mul(matrix[1][2],p.z)), matrix[1][3]);
+					var z = add(add(add(mul(matrix[2][0],p.x), mul(matrix[2][1],p.y)), mul(matrix[2][2],p.z)), matrix[2][3]);
+					var w = add(add(add(mul(matrix[3][0],p.x), mul(matrix[3][1],p.y)), mul(matrix[3][2],p.z)), matrix[3][3]);
+					x = div(x,w);
+					y = div(y,w);
+					z = div(z,w);
+
+					x = mul(x,fromNum(128));
+					y = mul(y,fromNum(128));
+					z = mul(z,fromNum(128));
+
+					screen_points[i] = {x:x, y:y, z:z};
+				}
+				return screen_points;
+			}
+
+			// prepare the triangles for a per-line rendering
+			function transform_triangles(screen_points, triangles)
+			{
+				var screen_triangles = [];
+				for (var i in triangles) {
+					var t = triangles[i];
+					var a = screen_points[t.a];
+					var b = screen_points[t.b];
+					var c = screen_points[t.c];
+
+					// sort points
+					var tmp;
+					if (b.y<a.y) { tmp=a; a=b; b=tmp; };
+					if (c.y<b.y) { tmp=b; b=c; c=tmp; };
+					if (b.y<a.y) { tmp=a; a=b; b=tmp; };
+
+					var y0 = round(a.y);
+					var y1 = round(b.y);
+					var y2 = round(c.y);
+
+					var dx01 = div(sub(b.x,a.x),sub(b.y,a.y));
+					var dx02 = div(sub(c.x,a.x),sub(c.y,a.y));
+					var dx12 = div(sub(c.x,b.x),sub(c.y,b.y));
+					var dz01 = div(sub(b.z,a.z),sub(b.y,a.y));
+					var dz02 = div(sub(c.z,a.z),sub(c.y,a.y));
+					var dz12 = div(sub(c.z,b.z),sub(c.y,b.y));
+
+					if (y0!=y1) {
+						screen_triangles.push({
+							y0: y0,
+							y1: y1,
+							dir: 0,
+							x: a.x,
+							z: a.z,
+							dx0: (dx01<dx02) ? dx01 : dx02,
+							dx1: (dx01<dx02) ? dx02 : dx01,
+							dz0: (dx01<dx02) ? dz01 : dz02,
+							dz1: (dx01<dx02) ? dz02 : dz01,
+							color:t.color
+						});
+					}
+					if (y1!=y2) {
+						screen_triangles.push({
+							y0: y1,
+							y1: y2,
+							dir: 1,
+							x: c.x,
+							z: c.z,
+							dx0: (dx02>dx12) ? dx02 : dx12,
+							dx1: (dx02>dx12) ? dx12 : dx02,
+							dz0: (dx02>dx12) ? dz02 : dz12,
+							dz1: (dx02>dx12) ? dz12 : dz02,
+							color:t.color
+						});
+					}
+				}
+				return screen_triangles;
+			}
+
+			/******************************************************************/
+			/* drawing process                                                */
+			/******************************************************************/
+
+			// test mesh : a cube
+			var points = [
+				{ x:fromNum(-1), y:fromNum(-1), z:fromNum(-1) },
+				{ x:fromNum(-1), y:fromNum(-1), z:fromNum( 1) },
+				{ x:fromNum(-1), y:fromNum( 1), z:fromNum(-1) },
+				{ x:fromNum(-1), y:fromNum( 1), z:fromNum( 1) },
+				{ x:fromNum( 1), y:fromNum(-1), z:fromNum(-1) },
+				{ x:fromNum( 1), y:fromNum(-1), z:fromNum( 1) },
+				{ x:fromNum( 1), y:fromNum( 1), z:fromNum(-1) },
+				{ x:fromNum( 1), y:fromNum( 1), z:fromNum( 1) }
+			];
+
+			var triangles = [
+				{ a:0, b:1, c:3, color:0x000080 },
+				{ a:0, b:3, c:2, color:0xff0000 },
+				{ a:0, b:1, c:5, color:0x800000 },
+				{ a:0, b:5, c:4, color:0x0000c0 },
+				{ a:0, b:2, c:6, color:0xc00000 },
+				{ a:0, b:6, c:4, color:0x0000ff },
+
+				{ a:4, b:5, c:7, color:0x008080 },
+				{ a:4, b:7, c:6, color:0xff8000 },
+				{ a:2, b:3, c:7, color:0x808000 },
+				{ a:2, b:7, c:6, color:0x0080c0 },
+				{ a:1, b:3, c:7, color:0xc08000 },
+				{ a:1, b:7, c:5, color:0x0080ff }
+			];
+
+			// draw a segment from xl to xr on the current line
+			function draw_segment(zbuffer,cbuffer,y, xl,xr,zl,dz,color)
+			{
+				xl += 128;
+				xr += 128;
+				var z = zl;
+				for (var x=xl; x<xr; x++) {
+					if (zbuffer[x]<z) {
+						zbuffer[x] = z;
+						cbuffer[x] = color;
+					}
+					z = add(z,dz);
+				}
+			}
+
+			// clears a line, and draws all triangles that intersect it
+			function draw_line(screen_triangles, zbuffer,cbuffer,y)
+			{
+				for (var x=0; x<256; x++) {
+					zbuffer[x] = fromNum(0);
+					cbuffer[x] = 0xffffff;
+				}
+				for (var i in screen_triangles) {
+					var t = screen_triangles[i];
+					if ((t.y0<=y) && (y<t.y1)) {
+						var dy = y - (t.dir?t.y1:t.y0);
+						var xl = add(t.x, dy*t.dx0);
+						var xr = add(t.x, dy*t.dx1);
+						var zl = add(t.z, dy*t.dz0);
+						var zr = add(t.z, dy*t.dz1);
+						var dz = div(sub(zr,zl),sub(xr,xl));
+						draw_segment(zbuffer,cbuffer,y, round(xl),round(xr),zl,dz,t.color);
+					}
+				}
+			}
+
+			/******************************************************************/
+			/* wrap up                                                        */
+			/******************************************************************/
+
+			function run()
+			{
+				// get the html5 context
+				var canvas = document.getElementById('canvas');
+				var context = canvas.getContext('2d');
+				var data = context.createImageData(256,256);
+
+				// prepare the projection matrix
+				var matrix = identity_matrix();
+				matrix = matrix_mult(rotation_matrix(0,1,0,1), matrix);
+				matrix = matrix_mult(rotation_matrix(1,0,0,0.5), matrix);
+				matrix = matrix_mult(translation_matrix(0,0,10), matrix);
+				matrix = matrix_mult(projection_matrix(5,50), matrix);
+				conv_matrix(matrix);
+
+				// process the raw data
+				var screen_points = transform_points(matrix, points);
+				var screen_triangles = transform_triangles(screen_points, triangles);
+
+				// draw lines
+				var cbuffer = [];
+				var zbuffer = [];
+				for (var y=0; y<256; y++) {
+					draw_line(screen_triangles, zbuffer,cbuffer,y-128);
+					for (var x=0; x<256; x++) {
+						var c = cbuffer[x];
+						data.data[4*(x + 256*y) + 0] = (c>>16)&0xff;
+						data.data[4*(x + 256*y) + 1] = (c>> 8)&0xff;
+						data.data[4*(x + 256*y) + 2] = (c>> 0)&0xff;
+						data.data[4*(x + 256*y) + 3] = 0xff;
+					}
+				}
+
+				// display result
+				context.putImageData(data,0,0);
+			}
+		</script>
+	</head>
+	<body onload="run()" style="text-align:center">
+		<canvas id="canvas" width="256" height="256"/>
+	</body>
+</html>
+

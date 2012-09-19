@@ -1,0 +1,12 @@
+# Output products list for <divider_small>
+_xmsgs/pn_parser.xmsgs
+divider_small.asy
+divider_small.gise
+divider_small.ngc
+divider_small.sym
+divider_small.vhd
+divider_small.vho
+divider_small.xco
+divider_small.xise
+divider_small_flist.txt
+divider_small_xmdf.tcl
