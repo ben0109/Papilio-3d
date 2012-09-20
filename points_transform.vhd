@@ -3,8 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity points_transform is
 port (
-	pcoefs	: in  STD_LOGIC_VECTOR((16*18-1) downto 0);
-	scoefs	: in  STD_LOGIC_VECTOR((12*18-1) downto 0);
+	matrix	: in  STD_LOGIC_VECTOR((16*18-1) downto 0);
 	
 	clk		: in  STD_LOGIC;
 	reset		: in  STD_LOGIC;
@@ -142,36 +141,36 @@ begin
 	m_reset <= m_select(2);
 
 	with m_select select
-	mx_a <=  pcoefs((18* 0+17) downto (18* 0)) when "001",
-				pcoefs((18* 1+17) downto (18* 1)) when "010",
-				pcoefs((18* 2+17) downto (18* 2)) when "100",
+	mx_a <=  matrix((18* 0+17) downto (18* 0)) when "001",
+				matrix((18* 1+17) downto (18* 1)) when "010",
+				matrix((18* 2+17) downto (18* 2)) when "100",
 				(others=>'0') when others;
 
-	mx_c <=  pcoefs((18* 3+17) downto (18* 3));
+	mx_c <=  matrix((18* 3+17) downto (18* 3));
 
 	with m_select select
-	my_a <=  pcoefs((18* 4+17) downto (18* 4)) when "001",
-				pcoefs((18* 5+17) downto (18* 5)) when "010",
-				pcoefs((18* 6+17) downto (18* 6)) when "100",
+	my_a <=  matrix((18* 4+17) downto (18* 4)) when "001",
+				matrix((18* 5+17) downto (18* 5)) when "010",
+				matrix((18* 6+17) downto (18* 6)) when "100",
 				(others=>'0') when others;
 
-	my_c <=  pcoefs((18* 7+17) downto (18* 7));
+	my_c <=  matrix((18* 7+17) downto (18* 7));
 
 	with m_select select
-	mz_a <=  pcoefs((18* 8+17) downto (18* 8)) when "001",
-				pcoefs((18* 9+17) downto (18* 9)) when "010",
-				pcoefs((18*10+17) downto (18*10)) when "100",
+	mz_a <=  matrix((18* 8+17) downto (18* 8)) when "001",
+				matrix((18* 9+17) downto (18* 9)) when "010",
+				matrix((18*10+17) downto (18*10)) when "100",
 				(others=>'0') when others;
 
-	mz_c <=  pcoefs((18*11+17) downto (18*11));
+	mz_c <=  matrix((18*11+17) downto (18*11));
 
 	with m_select select
-	mw_a <=  pcoefs((18*12+17) downto (18*12)) when "001",
-				pcoefs((18*13+17) downto (18*13)) when "010",
-				pcoefs((18*14+17) downto (18*14)) when "100",
+	mw_a <=  matrix((18*12+17) downto (18*12)) when "001",
+				matrix((18*13+17) downto (18*13)) when "010",
+				matrix((18*14+17) downto (18*14)) when "100",
 				(others=>'0') when others;
 
-	mw_c <=  pcoefs((18*15+17) downto (18*15));
+	mw_c <=  matrix((18*15+17) downto (18*15));
 						
 	with m_select select
 	m_b <=   view_x when "001",

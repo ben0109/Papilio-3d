@@ -8,11 +8,9 @@ port (
 	reset			: in  STD_LOGIC;
 	bg_color		: in  STD_LOGIC_VECTOR (8 downto 0);
 
-	cbuffer_we	: out STD_LOGIC;
-	cbuffer_x	: out STD_LOGIC_VECTOR (7 downto 0);
+	buffer_we	: out STD_LOGIC;
+	buffer_x		: out STD_LOGIC_VECTOR (7 downto 0);
 	cbuffer_d	: out STD_LOGIC_VECTOR (8 downto 0);
-	zbuffer_we	: out STD_LOGIC;
-	zbuffer_x	: out STD_LOGIC_VECTOR (7 downto 0);
 	zbuffer_d	: out STD_LOGIC_VECTOR (17 downto 0);
 	stop			: out STD_LOGIC);
 end buffer_clear;
@@ -40,12 +38,9 @@ begin
 		end if;
 	end process;
 	
-	cbuffer_we <= not finished;
-	cbuffer_x  <= std_logic_vector(i);
+	buffer_we  <= not finished;
+	buffer_x   <= std_logic_vector(i);
 	cbuffer_d  <= bg_color;
-	
-	zbuffer_we <= not finished;
-	zbuffer_x  <= std_logic_vector(i);
 	zbuffer_d  <= (others=>'0');
 	
 	stop <= finished;

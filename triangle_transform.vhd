@@ -211,6 +211,10 @@ begin
 						end if;
 					end if;
 					
+					color_0 <= d;
+				end if;
+				
+				if queue(10)='1' then
 					x0_1 <= x0_0;
 					y0_1 <= y0_0;
 					z0_1 <= z0_0;
@@ -219,7 +223,9 @@ begin
 					y2_1 <= y2_0;
 					z2_1 <= z2_0;
 					color_1 <= color_0;
-					
+				end if;
+				
+				if queue(16)='1' then
 					x0_2 <= x0_1;
 					y0_2 <= y0_1;
 					z0_2 <= z0_1;
@@ -228,7 +234,9 @@ begin
 					y2_2 <= y2_1;
 					z2_2 <= z2_1;
 					color_2 <= color_1;
-					
+				end if;
+				
+				if queue(22)='1' then
 					x0_3 <= x0_2;
 					y0_3 <= y0_2;
 					z0_3 <= z0_2;
@@ -237,7 +245,9 @@ begin
 					y2_3 <= y2_2;
 					z2_3 <= z2_2;
 					color_3 <= color_2;
-					
+				end if;
+				
+				if queue(28)='1' then
 					x0_4 <= x0_3;
 					y0_4 <= y0_3;
 					z0_4 <= z0_3;
@@ -246,7 +256,9 @@ begin
 					y2_4 <= y2_3;
 					z2_4 <= z2_3;
 					color_4 <= color_3;
-					
+				end if;
+				
+				if queue(34)='1' then
 					x0_5 <= x0_4;
 					y0_5 <= y0_4;
 					z0_5 <= z0_4;
@@ -255,7 +267,9 @@ begin
 					y2_5 <= y2_4;
 					z2_5 <= z2_4;
 					color_5 <= color_4;
-					
+				end if;
+				
+				if queue(40)='1' then
 					x0_6 <= x0_5;
 					y0_6 <= y0_5;
 					z0_6 <= z0_5;
@@ -317,7 +331,7 @@ begin
 						dzr <= dz01;
 						dzl <= dz02;
 					end if;
-					color <= color_5;
+					color <= color_6;
 					if y0_6=y1_6 then ready_out <= '0'; else ready_out <= '1'; end if;
 				when "10" =>
 					y0 <= y1_6(17 downto 8);
@@ -336,7 +350,7 @@ begin
 						dzr <= dz02;
 						dzl <= dz12;
 					end if;
-					color <= color_5;
+					color <= color_6;
 					if y1_6=y2_6 then ready_out <= '0'; else ready_out <= '1'; end if;
 				when others =>
 					ready_out <= '0';

@@ -1,28 +1,27 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
+library UNISIM;
+use UNISIM.VComponents.all;
+
 entity draw_pipeline is
 port (
 	clk			: in  STD_LOGIC;
-	max_t			: in  STD_LOGIC_VECTOR (8 downto 0);
 	reset			: in  STD_LOGIC;
 	y				: in  STD_LOGIC_VECTOR (7 downto 0);
-	
-	p_i			: out STD_LOGIC_VECTOR (8 downto 0);
-	p_x			: in  STD_LOGIC_VECTOR (17 downto 0);
-	p_y			: in  STD_LOGIC_VECTOR (17 downto 0);
-	p_z			: in  STD_LOGIC_VECTOR (17 downto 0);
 		
-	t_i			: out STD_LOGIC_VECTOR (8 downto 0);
-	t_y0			: in  STD_LOGIC_VECTOR (8 downto 0);
-	t_y1			: in  STD_LOGIC_VECTOR (8 downto 0);
+	max_t			: in  STD_LOGIC_VECTOR ( 8 downto 0);
+	t_i			: out STD_LOGIC_VECTOR ( 8 downto 0);
+	t_y0			: in  STD_LOGIC_VECTOR ( 9 downto 0);
+	t_y1			: in  STD_LOGIC_VECTOR ( 9 downto 0);
 	t_dir			: in  STD_LOGIC;
 	t_x			: in  STD_LOGIC_VECTOR (17 downto 0);
-	t_dx0			: in  STD_LOGIC_VECTOR (17 downto 0);
-	t_dx1			: in  STD_LOGIC_VECTOR (17 downto 0);
+	t_dxl			: in  STD_LOGIC_VECTOR (17 downto 0);
+	t_dxr			: in  STD_LOGIC_VECTOR (17 downto 0);
 	t_z			: in  STD_LOGIC_VECTOR (17 downto 0);
-	t_dz0			: in  STD_LOGIC_VECTOR (17 downto 0);
-	t_dz1			: in  STD_LOGIC_VECTOR (17 downto 0);
+	t_dzl			: in  STD_LOGIC_VECTOR (17 downto 0);
+	t_dzr			: in  STD_LOGIC_VECTOR (17 downto 0);
+	t_color		: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	
 	buffer_we	: out STD_LOGIC;
 	buffer_x		: out STD_LOGIC_VECTOR (7 downto 0);
@@ -39,11 +38,9 @@ architecture Behavioral of draw_pipeline is
 		reset			: in  STD_LOGIC;
 		bg_color		: in  STD_LOGIC_VECTOR (8 downto 0);
 
-		cbuffer_we	: out STD_LOGIC;
-		cbuffer_x	: out STD_LOGIC_VECTOR (7 downto 0);
+		buffer_we	: out STD_LOGIC;
+		buffer_x		: out STD_LOGIC_VECTOR (7 downto 0);
 		cbuffer_d	: out STD_LOGIC_VECTOR (8 downto 0);
-		zbuffer_we	: out STD_LOGIC;
-		zbuffer_x	: out STD_LOGIC_VECTOR (7 downto 0);
 		zbuffer_d	: out STD_LOGIC_VECTOR (17 downto 0);
 		stop			: out STD_LOGIC);
 	end component;
@@ -55,16 +52,17 @@ architecture Behavioral of draw_pipeline is
 		max_t	: in  STD_LOGIC_VECTOR (8 downto 0);
 		y		: in  STD_LOGIC_VECTOR (7 downto 0);
 		
-		t_i	: out STD_LOGIC_VECTOR (8 downto 0);
-		t_y0	: in  STD_LOGIC_VECTOR (8 downto 0);
-		t_y1	: in  STD_LOGIC_VECTOR (8 downto 0);
+		t_i	: out STD_LOGIC_VECTOR ( 8 downto 0);
+		t_y0	: in  STD_LOGIC_VECTOR ( 9 downto 0);
+		t_y1	: in  STD_LOGIC_VECTOR ( 9 downto 0);
 		t_dir	: in  STD_LOGIC;
 		t_x	: in  STD_LOGIC_VECTOR (17 downto 0);
-		t_dx0	: in  STD_LOGIC_VECTOR (17 downto 0);
-		t_dx1	: in  STD_LOGIC_VECTOR (17 downto 0);
+		t_dxl	: in  STD_LOGIC_VECTOR (17 downto 0);
+		t_dxr	: in  STD_LOGIC_VECTOR (17 downto 0);
 		t_z	: in  STD_LOGIC_VECTOR (17 downto 0);
-		t_dz0	: in  STD_LOGIC_VECTOR (17 downto 0);
-		t_dz1	: in  STD_LOGIC_VECTOR (17 downto 0);
+		t_dzl	: in  STD_LOGIC_VECTOR (17 downto 0);
+		t_dzr	: in  STD_LOGIC_VECTOR (17 downto 0);
+		t_color: in STD_LOGIC_VECTOR ( 8 downto 0);
 		
 		ready	: out STD_LOGIC;
 		stop	: out STD_LOGIC;
@@ -91,48 +89,42 @@ architecture Behavioral of draw_pipeline is
 		t_dz			: in  STD_LOGIC_VECTOR (17 downto 0);
 		t_color		: in  STD_LOGIC_VECTOR (8 downto 0);
 		
-		cbuffer_we	: out STD_LOGIC;
-		cbuffer_x_o	: out STD_LOGIC_VECTOR (7 downto 0);
-		cbuffer_d_o	: out STD_LOGIC_VECTOR (8 downto 0);
-		
 		zbuffer_x_i	: out STD_LOGIC_VECTOR (7 downto 0);
 		zbuffer_d_i	: in  STD_LOGIC_VECTOR (17 downto 0);
-		zbuffer_we	: out STD_LOGIC;
-		zbuffer_x_o	: out STD_LOGIC_VECTOR (7 downto 0);
+		
+		buffer_we	: out STD_LOGIC;
+		buffer_x_o	: out STD_LOGIC_VECTOR (7 downto 0);
+		cbuffer_d_o	: out STD_LOGIC_VECTOR (8 downto 0);
 		zbuffer_d_o	: out STD_LOGIC_VECTOR (17 downto 0);
 		
 		stop 			: out  STD_LOGIC);
 	end component;
 	
 	signal bc_stop				: STD_LOGIC;
-	signal bc_cbuffer_we		: STD_LOGIC;
-	signal bc_cbuffer_x_o	: STD_LOGIC_VECTOR (7 downto 0);
+	signal bc_buffer_we		: STD_LOGIC;
+	signal bc_buffer_x_o		: STD_LOGIC_VECTOR (7 downto 0);
 	signal bc_cbuffer_d_o	: STD_LOGIC_VECTOR (8 downto 0);
-	signal bc_zbuffer_we		: STD_LOGIC;
-	signal bc_zbuffer_x_o	: STD_LOGIC_VECTOR (7 downto 0);
 	signal bc_zbuffer_d_o	: STD_LOGIC_VECTOR (17 downto 0);
 	
-	signal ld_cbuffer_we		: STD_LOGIC;
-	signal ld_cbuffer_x_o	: STD_LOGIC_VECTOR (7 downto 0);
-	signal ld_cbuffer_d_o	: STD_LOGIC_VECTOR (8 downto 0);
-	signal ld_zbuffer_we		: STD_LOGIC;
-	signal ld_zbuffer_x_o	: STD_LOGIC_VECTOR (7 downto 0);
+	signal ld_buffer_we		: STD_LOGIC;
+	signal ld_buffer_x_o		: STD_LOGIC_VECTOR ( 7 downto 0);
+	signal ld_cbuffer_d_o	: STD_LOGIC_VECTOR ( 8 downto 0);
 	signal ld_zbuffer_d_o	: STD_LOGIC_VECTOR (17 downto 0);
 	
-	signal zbuffer_x_i		: STD_LOGIC_VECTOR (7 downto 0);
-	signal zbuffer_d_i		: STD_LOGIC_VECTOR (7 downto 0);
-	signal zbuffer_we			: STD_LOGIC;
-	signal zbuffer_x_o		: STD_LOGIC_VECTOR (7 downto 0);
+	signal zbuffer_x_o		: STD_LOGIC_VECTOR ( 7 downto 0);
 	signal zbuffer_d_o		: STD_LOGIC_VECTOR (17 downto 0);
+	signal zbuffer_we			: STD_LOGIC;
+	signal zbuffer_x_i		: STD_LOGIC_VECTOR ( 7 downto 0);
+	signal zbuffer_d_i		: STD_LOGIC_VECTOR (17 downto 0);
 	
 	signal t_ready		: STD_LOGIC;
 	signal t_stop		: STD_LOGIC;
 	signal t_pull		: STD_LOGIC;
-	signal t_xl			: STD_LOGIC_VECTOR (17 downto 0);
-	signal t_xr			: STD_LOGIC_VECTOR (17 downto 0);
-	signal t_zl			: STD_LOGIC_VECTOR (17 downto 0);
-	signal t_dz			: STD_LOGIC_VECTOR (17 downto 0);
-	signal t_color		: STD_LOGIC_VECTOR (8 downto 0);
+	signal xl			: STD_LOGIC_VECTOR ( 9 downto 0);
+	signal xr			: STD_LOGIC_VECTOR ( 9 downto 0);
+	signal zl			: STD_LOGIC_VECTOR (17 downto 0);
+	signal dz			: STD_LOGIC_VECTOR (17 downto 0);
+	signal color		: STD_LOGIC_VECTOR ( 8 downto 0);
 
 begin
 
@@ -142,12 +134,9 @@ begin
 		reset			=> reset,
 		bg_color		=> (others=>'0'),
 
-		cbuffer_we	=> bc_cbuffer_we,
-		cbuffer_x	=> bc_cbuffer_x_o,
+		buffer_we	=> bc_buffer_we,
+		buffer_x		=> bc_buffer_x_o,
 		cbuffer_d	=> bc_cbuffer_d_o,
-		
-		zbuffer_we	=> bc_zbuffer_we,
-		zbuffer_x	=> bc_zbuffer_x_o,
 		zbuffer_d	=> bc_zbuffer_d_o,
 		
 		stop			=> bc_stop);
@@ -155,30 +144,31 @@ begin
 
 	triangle_finder_inst: triangle_finder
 	port map (
-		clk	=> clk,
-		reset => reset,
-		max_t	=> max_t,
-		y		=> y,
+		clk		=> clk,
+		reset 	=> reset,
+		max_t		=> max_t,
+		y			=> y,
 		
-		t_i	=> t_i,
-		t_y0	=> t_y0,
-		t_y1	=> t_y1,
-		t_dir	=> t_dir,
-		t_x	=> t_x,
-		t_dx0	=> t_dx0,
-		t_dx1	=> t_dx1,
-		t_z	=> t_z,
-		t_dz0	=> t_dz0,
-		t_dz1	=> t_dz1,
+		t_i		=> t_i,
+		t_y0		=> t_y0,
+		t_y1		=> t_y1,
+		t_dir		=> t_dir,
+		t_x		=> t_x,
+		t_dxl		=> t_dxl,
+		t_dxr		=> t_dxr,
+		t_z		=> t_z,
+		t_dzl		=> t_dzl,
+		t_dzr		=> t_dzr,
+		t_color	=> t_color,
 		
-		ready	=> t_ready,
-		stop	=> t_stop,
-		pull	=> t_pull,
-		xl		=> t_xl,
-		xr		=> t_xr,
-		zl		=> t_zl,
-		dz		=> t_dz,
-		color	=> t_color);
+		ready		=> t_ready,
+		stop		=> t_stop,
+		pull		=> t_pull,
+		xl			=> xl,
+		xr			=> xr,
+		zl			=> zl,
+		dz			=> dz,
+		color		=> color);
 	
 	line_drawer_inst: line_drawer
 	port map (
@@ -189,31 +179,52 @@ begin
 		t_ready		=> t_ready,
 		t_stop		=> t_stop,
 		t_pull		=> t_pull,
-		t_xl			=> t_xl,
-		t_xr			=> t_xr,
-		t_zl			=> t_zl,
-		t_dz			=> t_dz,
-		t_color		=> t_color,
+		t_xl			=> xl,
+		t_xr			=> xr,
+		t_zl			=> zl,
+		t_dz			=> dz,
+		t_color		=> color,
 		
-		cbuffer_we	=> ld_cbuffer_we,
-		cbuffer_x_o	=> ld_cbuffer_x_o,
+		zbuffer_x_i	=> zbuffer_x_o,
+		zbuffer_d_i	=> zbuffer_d_o,
+		
+		buffer_we	=> ld_buffer_we,
+		buffer_x_o	=> ld_buffer_x_o,
 		cbuffer_d_o	=> ld_cbuffer_d_o,
-		
-		zbuffer_x_i	=> zbuffer_x_i,
-		zbuffer_d_i	=> zbuffer_d_i,
-		zbuffer_we	=> ld_zbuffer_we,
-		zbuffer_x_o	=> ld_zbuffer_x_o,
 		zbuffer_d_o	=> ld_zbuffer_d_o,
 		
 		stop 			=> stop);
 		
-	buffer_we   <= bc_cbuffer_we  when bc_stop='0' else ld_cbuffer_we;
-	buffer_x    <= bc_cbuffer_x_o when bc_stop='0' else ld_cbuffer_x_o;
-	buffer_d    <= bc_cbuffer_d_o when bc_stop='0' else ld_cbuffer_d_o;
+	zbuffer_we  <= bc_buffer_we  when bc_stop='0' else ld_buffer_we;	
+	zbuffer_x_i <= bc_buffer_x_o when bc_stop='0' else ld_buffer_x_o;
+	
+	buffer_we   <= zbuffer_we;
+	buffer_x    <= zbuffer_x_i;
+	
+	buffer_d    <= bc_cbuffer_d_o when bc_stop='0' else ld_cbuffer_d_o;	
+	zbuffer_d_i <= bc_zbuffer_d_o when bc_stop='0' else ld_zbuffer_d_o;
+	
+	zbuffer_ram: RAMB16_S18_S18
+	port map (
+		clkA  => clk,
+		ssrA  => '0',
+		enA   => '1',
+		weA   => zbuffer_we,
+		addrA => "00"&zbuffer_x_i,
+		diA   => zbuffer_d_i(15 downto  0),
+		dipA  => zbuffer_d_i(17 downto 16),
+		doA   => open,
+		dopA  => open,
 		
-	zbuffer_we  <= bc_zbuffer_we  when bc_stop='0' else ld_zbuffer_we;
-	zbuffer_x_o <= bc_zbuffer_x_o when bc_stop='0' else ld_zbuffer_x_o;
-	zbuffer_d_o <= bc_zbuffer_d_o when bc_stop='0' else ld_zbuffer_d_o;
+		clkB  => clk,
+		ssrB  => '0',
+		enB   => '1',
+		weB   => '0',
+		addrB => "00"&zbuffer_x_o,
+		diB   => (others=>'0'),
+		dipB  => (others=>'0'),
+		doB   => zbuffer_d_o(15 downto  0),
+		dopB  => zbuffer_d_o(17 downto 16));
 
 end Behavioral;
 

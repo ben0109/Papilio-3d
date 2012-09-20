@@ -16,18 +16,16 @@ port (
 	t_pull		: out STD_LOGIC;
 	t_xl			: in  STD_LOGIC_VECTOR (9 downto 0);
 	t_xr			: in  STD_LOGIC_VECTOR (9 downto 0);
-	t_zl			: in  STD_LOGIC_VECTOR (15 downto 0);
-	t_dz			: in  STD_LOGIC_VECTOR (15 downto 0);
+	t_zl			: in  STD_LOGIC_VECTOR (17 downto 0);
+	t_dz			: in  STD_LOGIC_VECTOR (17 downto 0);
 	t_color		: in  STD_LOGIC_VECTOR (8 downto 0);
 	
-	cbuffer_we	: out STD_LOGIC;
-	cbuffer_x_o	: out STD_LOGIC_VECTOR (7 downto 0);
-	cbuffer_d_o	: out STD_LOGIC_VECTOR (8 downto 0);
-	
-	zbuffer_x_i	: out STD_LOGIC_VECTOR (7 downto 0);
+	zbuffer_x_i	: out STD_LOGIC_VECTOR ( 7 downto 0);
 	zbuffer_d_i	: in  STD_LOGIC_VECTOR (17 downto 0);
-	zbuffer_we	: out STD_LOGIC;
-	zbuffer_x_o	: out STD_LOGIC_VECTOR (7 downto 0);
+	
+	buffer_we	: out STD_LOGIC;
+	buffer_x_o	: out STD_LOGIC_VECTOR ( 7 downto 0);
+	cbuffer_d_o	: out STD_LOGIC_VECTOR ( 8 downto 0);
 	zbuffer_d_o	: out STD_LOGIC_VECTOR (17 downto 0);
 	
 	stop 			: out  STD_LOGIC);
@@ -100,15 +98,12 @@ begin
 					
 					-- ...compare z, and write if closer
 					if queue='1' and signed(zbuffer_d_i)<signed(p) then
-						cbuffer_we  <= '1';
-						cbuffer_x_o <= std_logic_vector(x1(7 downto 0));
+						buffer_we   <= '1';
+						buffer_x_o  <= std_logic_vector(x1(7 downto 0));
 						cbuffer_d_o <= color;
-						zbuffer_we  <= '1';
-						zbuffer_x_o <= std_logic_vector(x1(7 downto 0));
 						zbuffer_d_o <= p;
 					else
-						cbuffer_we  <= '0';
-						zbuffer_we  <= '0';
+						buffer_we   <= '0';
 					end if;
 					
 					-- loop
@@ -121,6 +116,8 @@ begin
 						x <= x+1;
 						queue <= '1';
 					end if;
+					
+				when others =>
 				end case;
 			end if;
 		end if;

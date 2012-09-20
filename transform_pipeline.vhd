@@ -9,8 +9,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity transform_pipeline is
 port (
-	pcoefs	: in  STD_LOGIC_VECTOR((16*18-1) downto 0);
-	scoefs	: in  STD_LOGIC_VECTOR((12*18-1) downto 0);
+	matrix	: in  STD_LOGIC_VECTOR((16*18-1) downto 0);
 	nb_p		: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	nb_t		: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	
@@ -70,8 +69,7 @@ architecture Behavioral of transform_pipeline is
 
 	component points_transform is
 	port (
-		pcoefs	: in  STD_LOGIC_VECTOR((16*18-1) downto 0);
-		scoefs	: in  STD_LOGIC_VECTOR((12*18-1) downto 0);
+		matrix	: in  STD_LOGIC_VECTOR((16*18-1) downto 0);
 		
 		clk		: in  STD_LOGIC;
 		reset		: in  STD_LOGIC;
@@ -132,10 +130,10 @@ architecture Behavioral of transform_pipeline is
 		color		: out STD_LOGIC_VECTOR ( 8 downto 0));
 	end component;
 	
-	signal p_i_i : unsigned(8 downto 0);
-	signal p_i_o : unsigned(8 downto 0);
-	signal t_i_i : unsigned(8 downto 0);
-	signal t_i_o : unsigned(8 downto 0);
+	signal p_i_i : unsigned(8 downto 0) := (others=>'0');
+	signal p_i_o : unsigned(8 downto 0) := (others=>'0');
+	signal t_i_i : unsigned(8 downto 0) := (others=>'0');
+	signal t_i_o : unsigned(8 downto 0) := (others=>'0');
 	
 	signal p_ready_in	: std_logic := '0';
 	signal p_stop_in	: std_logic := '1';
@@ -184,8 +182,7 @@ begin
 
 	points_transform_inst: points_transform
 	port map (
-		pcoefs	=> pcoefs,
-		scoefs	=> scoefs,
+		matrix	=> matrix,
 		clk		=> clk,
 		reset		=> reset,
 

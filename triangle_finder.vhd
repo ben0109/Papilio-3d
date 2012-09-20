@@ -22,16 +22,16 @@ port (
 	t_z		: in  STD_LOGIC_VECTOR (17 downto 0);
 	t_dzl		: in  STD_LOGIC_VECTOR (17 downto 0);
 	t_dzr		: in  STD_LOGIC_VECTOR (17 downto 0);
-	t_color	: in  STD_LOGIC_VECTOR (17 downto 0);
+	t_color	: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	
 	ready		: out STD_LOGIC;
 	stop		: out STD_LOGIC;
 	pull		: in  STD_LOGIC;
-	xl			: out STD_LOGIC_VECTOR (9 downto 0);
-	xr			: out STD_LOGIC_VECTOR (9 downto 0);
+	xl			: out STD_LOGIC_VECTOR ( 9 downto 0);
+	xr			: out STD_LOGIC_VECTOR ( 9 downto 0);
 	zl			: out STD_LOGIC_VECTOR (17 downto 0);
 	dz			: out STD_LOGIC_VECTOR (17 downto 0);
-	color		: out STD_LOGIC_VECTOR (8 downto 0));
+	color		: out STD_LOGIC_VECTOR ( 8 downto 0));
 end triangle_finder;
 
 architecture Behavioral of triangle_finder is

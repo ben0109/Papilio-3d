@@ -55,6 +55,7 @@ ARCHITECTURE behavior OF triangle_finder_tb IS
          t_z : IN  std_logic_vector(17 downto 0);
          t_dzl : IN  std_logic_vector(17 downto 0);
          t_dzr : IN  std_logic_vector(17 downto 0);
+         t_color : IN  std_logic_vector(8 downto 0);
          ready : OUT  std_logic;
          stop : OUT  std_logic;
          pull : IN  std_logic;
@@ -81,6 +82,7 @@ ARCHITECTURE behavior OF triangle_finder_tb IS
    signal t_z : std_logic_vector(17 downto 0) := (others => '0');
    signal t_dzl : std_logic_vector(17 downto 0) := (others => '0');
    signal t_dzr : std_logic_vector(17 downto 0) := (others => '0');
+   signal t_color : std_logic_vector(8 downto 0) := (others => '0');
    signal pull : std_logic := '0';
 
  	--Outputs
@@ -114,6 +116,7 @@ BEGIN
           t_z => t_z,
           t_dzl => t_dzl,
           t_dzr => t_dzr,
+          t_color => t_color,
           ready => ready,
           stop => stop,
           pull => pull,
@@ -150,6 +153,7 @@ BEGIN
 		t_z   <= "000000000000000000";
 		t_dzl <= "000000000100000000";
 		t_dzr <= "000000001000000000";
+		t_color <= "101010101";
 
       wait;
    end process;
