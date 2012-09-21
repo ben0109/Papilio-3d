@@ -28,9 +28,9 @@ port (
 	t_d		: in  STD_LOGIC_VECTOR ( 8 downto 0);
 
 	st_we		: out STD_LOGIC;
-	st_i		: out STD_LOGIC_VECTOR (8 downto 0);
-	st_y0		: out STD_LOGIC_VECTOR (9 downto 0);
-	st_y1		: out STD_LOGIC_VECTOR (9 downto 0);
+	st_i		: out STD_LOGIC_VECTOR ( 9 downto 0);
+	st_y0		: out STD_LOGIC_VECTOR ( 9 downto 0);
+	st_y1		: out STD_LOGIC_VECTOR ( 9 downto 0);
 	st_dir	: out STD_LOGIC;
 	st_x		: out STD_LOGIC_VECTOR (17 downto 0);
 	st_dxl	: out STD_LOGIC_VECTOR (17 downto 0);
@@ -133,7 +133,7 @@ architecture Behavioral of transform_pipeline is
 	signal p_i_i : unsigned(8 downto 0) := (others=>'0');
 	signal p_i_o : unsigned(8 downto 0) := (others=>'0');
 	signal t_i_i : unsigned(8 downto 0) := (others=>'0');
-	signal t_i_o : unsigned(8 downto 0) := (others=>'0');
+	signal t_i_o : unsigned(9 downto 0) := (others=>'0');
 	
 	signal p_ready_in	: std_logic := '0';
 	signal p_stop_in	: std_logic := '1';
@@ -248,32 +248,35 @@ begin
 				p_i_o <= (others=>'0');
 				t_i_i <= (others=>'0');
 				t_i_o <= (others=>'0');
-			else
-				if p_i_i<unsigned(nb_p) then
-					p_ready_in <= '1';
-					p_stop_in  <= '0';
-				else
-					p_ready_in <= '0';
-					p_stop_in  <= '1';
-				end if;
-				
+				p_ready_in <= '1';
+				p_stop_in  <= '0';
+				t_ready_in <= '0';
+				t_stop_in  <= '0';
+			else				
 				if p_pull_in='1' then
-					p_i_i <= p_i_i+1;
+					if p_i_i<unsigned(nb_p) then
+						p_ready_in <= '1';
+						p_stop_in  <= '0';
+						p_i_i <= p_i_i+1;
+					else
+						p_ready_in <= '0';
+						p_stop_in  <= '1';
+						t_ready_in <= '1';
+					end if;
 				end if;
 				if p_ready_out='1' then
 					p_i_o <= p_i_o+1;
 				end if;
-
-				if t_i_i<unsigned(nb_t) then
-					t_ready_in <= p_stop_out;
-					t_stop_in  <= '0';
-				else
-					t_ready_in <= '0';
-					t_stop_in  <= '1';
-				end if;
 				
 				if t_pull_in='1' then
-					t_i_i <= t_i_i+1;
+					if t_i_i<unsigned(nb_t) then
+						t_ready_in <= '1';
+						t_stop_in  <= '0';
+						t_i_i <= t_i_i+1;
+					else
+						t_ready_in <= '0';
+						t_stop_in  <= '1';
+					end if;
 				end if;
 				if t_ready_out='1' then
 					t_i_o <= t_i_o+1;

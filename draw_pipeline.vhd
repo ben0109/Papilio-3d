@@ -8,10 +8,10 @@ entity draw_pipeline is
 port (
 	clk			: in  STD_LOGIC;
 	reset			: in  STD_LOGIC;
-	y				: in  STD_LOGIC_VECTOR (7 downto 0);
+	y				: in  STD_LOGIC_VECTOR ( 7 downto 0);
 		
-	max_t			: in  STD_LOGIC_VECTOR ( 8 downto 0);
-	t_i			: out STD_LOGIC_VECTOR ( 8 downto 0);
+	max_t			: in  STD_LOGIC_VECTOR ( 9 downto 0);
+	t_i			: out STD_LOGIC_VECTOR ( 9 downto 0);
 	t_y0			: in  STD_LOGIC_VECTOR ( 9 downto 0);
 	t_y1			: in  STD_LOGIC_VECTOR ( 9 downto 0);
 	t_dir			: in  STD_LOGIC;
@@ -49,10 +49,10 @@ architecture Behavioral of draw_pipeline is
 	port (
 		clk	: in  STD_LOGIC;
 		reset : in  STD_LOGIC;
-		max_t	: in  STD_LOGIC_VECTOR (8 downto 0);
-		y		: in  STD_LOGIC_VECTOR (7 downto 0);
+		max_t	: in  STD_LOGIC_VECTOR ( 9 downto 0);
+		y		: in  STD_LOGIC_VECTOR ( 7 downto 0);
 		
-		t_i	: out STD_LOGIC_VECTOR ( 8 downto 0);
+		t_i	: out STD_LOGIC_VECTOR ( 9 downto 0);
 		t_y0	: in  STD_LOGIC_VECTOR ( 9 downto 0);
 		t_y1	: in  STD_LOGIC_VECTOR ( 9 downto 0);
 		t_dir	: in  STD_LOGIC;
@@ -176,7 +176,7 @@ begin
 		reset			=> reset,
 		y				=> y,
 		
-		t_ready		=> t_ready,
+		t_ready		=> t_ready and bc_stop,
 		t_stop		=> t_stop,
 		t_pull		=> t_pull,
 		t_xl			=> xl,

@@ -36,11 +36,12 @@ architecture Behavioral of line_drawer is
 	constant STATE_WAITING : integer := 0;
 	constant STATE_STOP    : integer := 1;
 	constant STATE_DRAWING : integer := 2;
+	constant STATE_FINISH  : integer := 3;
 
 	signal state : integer;
 	
-	signal x1 : signed(9 downto 0);
-	signal x  : signed(9 downto 0);
+	signal x1 : signed(7 downto 0);
+	signal x  : signed(7 downto 0);
 	signal xr : signed(7 downto 0);
 	signal z  : signed(17 downto 0);
 	signal dz : signed(17 downto 0);
@@ -76,11 +77,11 @@ begin
 						state <= STATE_DRAWING;
 						queue <= '0';
 						
-						tmpx := signed(t_xl)+(128*256);
-						if tmpx>=0 then x <= tmpx; else x <= (others=>'0'); end if;
+						tmpx := signed(t_xl)+128;
+						if tmpx>=0  then x  <= tmpx(7 downto 0); else x  <= (others=>'0'); end if;
 						
-						tmpx := signed(t_xr)+(128*256);
-						if tmpx<256 then xr <= tmpx; else xr <= (others=>'1'); end if;
+						tmpx := signed(t_xr)+128;
+						if tmpx<256 then xr <= tmpx(7 downto 0); else xr <= (others=>'1'); end if;
 						
 						a <= t_dz;
 						c <= t_zl;
@@ -89,8 +90,27 @@ begin
 					end if;
 					
 				when STATE_DRAWING =>
+					if x=xr then
+						if queue='0' then
+							state <= STATE_FINISH;
+						end if;
+						queue <= '0';
+					else
+						x <= x+1;
+						queue <= '1';
+					end if;
+					
+				when STATE_FINISH  =>
+					state <= STATE_WAITING;
+					
+				when others =>
+				end case;
+				
+				
+				case state is
+				when STATE_DRAWING | STATE_FINISH =>
 					-- prepare mult and fetch previous z
-					d <= "00000000"&std_logic_vector(x);
+					d <= "0000000000"&std_logic_vector(x);
 					zbuffer_x_i <= std_logic_vector(x);
 
 					-- for next cycle...
@@ -106,18 +126,8 @@ begin
 						buffer_we   <= '0';
 					end if;
 					
-					-- loop
-					if x=xr then
-						if queue='0' then
-							state <= STATE_WAITING;
-						end if;
-						queue <= '0';
-					else
-						x <= x+1;
-						queue <= '1';
-					end if;
-					
 				when others =>
+					buffer_we   <= '0';
 				end case;
 			end if;
 		end if;

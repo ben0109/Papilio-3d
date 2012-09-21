@@ -136,8 +136,8 @@ architecture Behavioral of triangle_transform is
 	signal dz12 : std_logic_vector(17 downto 0);
 
 	signal pull_in_int : std_logic;
-	signal queue : std_logic_vector((DIVIDER_LATENCY+12) downto 0);
-	constant EMPTY : std_logic_vector((DIVIDER_LATENCY+12) downto 0) := (others=>'0');
+	signal queue : std_logic_vector((DIVIDER_LATENCY+13) downto 0);
+	constant EMPTY : std_logic_vector((DIVIDER_LATENCY+13) downto 0) := (others=>'0');
 
 begin
 		
@@ -332,7 +332,7 @@ begin
 						dzl <= dz02;
 					end if;
 					color <= color_6;
-					if y0_6=y1_6 then ready_out <= '0'; else ready_out <= '1'; end if;
+					if y0_6(17 downto 8)=y1_6(17 downto 8) then ready_out <= '0'; else ready_out <= '1'; end if;
 				when "10" =>
 					y0 <= y1_6(17 downto 8);
 					y1 <= y2_6(17 downto 8);
@@ -351,7 +351,7 @@ begin
 						dzl <= dz12;
 					end if;
 					color <= color_6;
-					if y1_6=y2_6 then ready_out <= '0'; else ready_out <= '1'; end if;
+					if y1_6(17 downto 8)=y2_6(17 downto 8) then ready_out <= '0'; else ready_out <= '1'; end if;
 				when others =>
 					ready_out <= '0';
 				end case;

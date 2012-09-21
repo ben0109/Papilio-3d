@@ -28,17 +28,19 @@
     <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/xst.xmsgs"/>
     <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="buffer_clear_isim_beh.exe"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="buffer_clear_stx_beh.prj"/>
-    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="draw_pipeline_beh.prj"/>
     <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="draw_pipeline_isim_beh.exe"/>
-    <file xil_pn:fileType="FILE_ISIM_MISC" xil_pn:name="draw_pipeline_isim_beh.wdb"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="draw_pipeline_stx_beh.prj"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="full_pipeline_stx_beh.prj"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="full_pipeline_tb_beh.prj"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="full_pipeline_tb_isim_beh.exe"/>
+    <file xil_pn:fileType="FILE_ISIM_MISC" xil_pn:name="full_pipeline_tb_isim_beh.wdb"/>
     <file xil_pn:fileType="FILE_LOG" xil_pn:name="fuse.log"/>
     <file xil_pn:fileType="FILE_LOG" xil_pn:name="ipcore_dir/coregen.log"/>
     <file xil_pn:fileType="FILE_USERDOC" xil_pn:name="ipcore_dir/divider_readme.txt"/>
     <file xil_pn:fileType="FILE_USERDOC" xil_pn:name="ipcore_dir/divider_small_readme.txt"/>
     <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="isim"/>
     <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_CMD" xil_pn:name="isim.cmd"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_LOG" xil_pn:name="isim.log"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="matrix.prj"/>
     <file xil_pn:fileType="FILE_XST_STX" xil_pn:name="matrix.stx"/>
     <file xil_pn:fileType="FILE_XST" xil_pn:name="matrix.xst"/>
@@ -79,6 +81,7 @@
     <file xil_pn:fileType="FILE_HTML" xil_pn:name="transform_pipeline_summary.html"/>
     <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="transform_pipeline_tb_isim_beh.exe"/>
     <file xil_pn:fileType="FILE_XRPT" xil_pn:name="transform_pipeline_xst.xrpt"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="triangle_finder_isim_beh.exe"/>
     <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="triangle_finder_stx_beh.prj"/>
     <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="triangle_finder_tb_isim_beh.exe"/>
     <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="triangle_transform_isim_beh.exe"/>
@@ -94,12 +97,13 @@
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1348172917" xil_pn:in_ck="-3251566669158419471" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1348172917">
+    <transform xil_pn:end_ts="1348256815" xil_pn:in_ck="6455389284823089566" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1348256815">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
       <outfile xil_pn:name="buffer_clear.vhd"/>
       <outfile xil_pn:name="draw_pipeline.vhd"/>
       <outfile xil_pn:name="full_pipeline.vhd"/>
+      <outfile xil_pn:name="full_pipeline_tb.vhd"/>
       <outfile xil_pn:name="line_buffer.vhdl"/>
       <outfile xil_pn:name="line_drawer.vhdl"/>
       <outfile xil_pn:name="mult_acc.vhd"/>
@@ -116,11 +120,11 @@
       <outfile xil_pn:name="triangle_transform.vhd"/>
       <outfile xil_pn:name="z_buffer.vhdl"/>
     </transform>
-    <transform xil_pn:end_ts="1348172282" xil_pn:name="TRAN_xawsToSimhdl" xil_pn:prop_ck="8516566838846806566" xil_pn:start_ts="1348172282">
+    <transform xil_pn:end_ts="1348174016" xil_pn:name="TRAN_xawsToSimhdl" xil_pn:prop_ck="-19217628061429165" xil_pn:start_ts="1348174016">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
-    <transform xil_pn:end_ts="1348172282" xil_pn:name="TRAN_schematicsToHdlSim" xil_pn:prop_ck="940955907743726244" xil_pn:start_ts="1348172282">
+    <transform xil_pn:end_ts="1348174016" xil_pn:name="TRAN_schematicsToHdlSim" xil_pn:prop_ck="3933790604747517137" xil_pn:start_ts="1348174016">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
     </transform>
@@ -132,13 +136,13 @@
       <outfile xil_pn:name="ipcore_dir/divider_small.ngc"/>
       <outfile xil_pn:name="ipcore_dir/divider_small.vhd"/>
     </transform>
-    <transform xil_pn:end_ts="1348172917" xil_pn:in_ck="2745485050990100439" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1348172917">
+    <transform xil_pn:end_ts="1348256815" xil_pn:in_ck="6455389284823089566" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1348256815">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
       <outfile xil_pn:name="buffer_clear.vhd"/>
       <outfile xil_pn:name="draw_pipeline.vhd"/>
       <outfile xil_pn:name="full_pipeline.vhd"/>
-      <outfile xil_pn:name="ipcore_dir/divider.vhd"/>
+      <outfile xil_pn:name="full_pipeline_tb.vhd"/>
       <outfile xil_pn:name="line_buffer.vhdl"/>
       <outfile xil_pn:name="line_drawer.vhdl"/>
       <outfile xil_pn:name="mult_acc.vhd"/>
@@ -155,20 +159,24 @@
       <outfile xil_pn:name="triangle_transform.vhd"/>
       <outfile xil_pn:name="z_buffer.vhdl"/>
     </transform>
-    <transform xil_pn:end_ts="1348172932" xil_pn:in_ck="7956712038917695349" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="-5949420075119447777" xil_pn:start_ts="1348172917">
+    <transform xil_pn:end_ts="1348256830" xil_pn:in_ck="-6633015075269344670" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="1876074495873896966" xil_pn:start_ts="1348256815">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <outfile xil_pn:name="draw_pipeline_beh.prj"/>
-      <outfile xil_pn:name="draw_pipeline_isim_beh.exe"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
+      <outfile xil_pn:name="full_pipeline_tb_beh.prj"/>
+      <outfile xil_pn:name="full_pipeline_tb_isim_beh.exe"/>
       <outfile xil_pn:name="fuse.log"/>
       <outfile xil_pn:name="isim"/>
+      <outfile xil_pn:name="isim.log"/>
       <outfile xil_pn:name="xilinxsim.ini"/>
     </transform>
-    <transform xil_pn:end_ts="1348172932" xil_pn:in_ck="129771771892413195" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="-2888261726401203956" xil_pn:start_ts="1348172932">
+    <transform xil_pn:end_ts="1348256831" xil_pn:in_ck="2587206130958909427" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="-6550559877460287885" xil_pn:start_ts="1348256830">
       <status xil_pn:value="SuccessfullyRun"/>
       <status xil_pn:value="ReadyToRun"/>
-      <outfile xil_pn:name="draw_pipeline_isim_beh.wdb"/>
+      <outfile xil_pn:name="full_pipeline_tb_isim_beh.wdb"/>
       <outfile xil_pn:name="isim.cmd"/>
+      <outfile xil_pn:name="isim.log"/>
     </transform>
     <transform xil_pn:end_ts="1347394610" xil_pn:name="TRAN_copyInitialToXSTAbstractSynthesis" xil_pn:start_ts="1347394610">
       <status xil_pn:value="SuccessfullyRun"/>
@@ -233,7 +241,7 @@
     <transform xil_pn:end_ts="1348085484" xil_pn:in_ck="-6142047102962181544" xil_pn:name="TRANEXT_map_spartan6" xil_pn:prop_ck="1448924893915930207" xil_pn:start_ts="1348085248">
       <status xil_pn:value="FailedRun"/>
       <status xil_pn:value="WarningsGenerated"/>
-      <status xil_pn:value="NotReadyToRun"/>
+      <status xil_pn:value="ReadyToRun"/>
       <status xil_pn:value="OutOfDateForInputs"/>
       <status xil_pn:value="OutOfDateForPredecessor"/>
       <status xil_pn:value="OutOfDateForOutputs"/>

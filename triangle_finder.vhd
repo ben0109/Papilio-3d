@@ -9,12 +9,12 @@ entity triangle_finder is
 port (
 	clk		: in  STD_LOGIC;
 	reset 	: in  STD_LOGIC;
-	max_t		: in  STD_LOGIC_VECTOR (8 downto 0);
-	y			: in  STD_LOGIC_VECTOR (7 downto 0); -- 8 bit signed coordinates (0 is middle of screen)
+	y			: in  STD_LOGIC_VECTOR ( 7 downto 0); -- 8 bit signed coordinates (0 is middle of screen)
 	
-	t_i		: out STD_LOGIC_VECTOR (8 downto 0);
-	t_y0		: in  STD_LOGIC_VECTOR (9 downto 0);
-	t_y1		: in  STD_LOGIC_VECTOR (9 downto 0);
+	max_t		: in  STD_LOGIC_VECTOR ( 9 downto 0);
+	t_i		: out STD_LOGIC_VECTOR ( 9 downto 0);
+	t_y0		: in  STD_LOGIC_VECTOR ( 9 downto 0);
+	t_y1		: in  STD_LOGIC_VECTOR ( 9 downto 0);
 	t_dir		: in  STD_LOGIC;
 	t_x		: in  STD_LOGIC_VECTOR (17 downto 0);
 	t_dxl		: in  STD_LOGIC_VECTOR (17 downto 0);
@@ -47,12 +47,12 @@ architecture Behavioral of triangle_finder is
 	end component;
 
 	constant MULT_ADD_LATENCY : integer := 3;
-	constant DIVIDER_LATENCY : integer := 23;
+	constant DIVIDER_LATENCY : integer := 30;
 	
 	constant STATE_READY : integer := MULT_ADD_LATENCY+DIVIDER_LATENCY+15;
 	constant STATE_STOP : integer := MULT_ADD_LATENCY+DIVIDER_LATENCY+16;
 
-	signal i : unsigned(8 downto 0) := (others=>'0');
+	signal i : unsigned(9 downto 0) := (others=>'0');
 	signal state : integer := 0;
 	
 	signal xl_int : std_logic_vector( 9 downto 0);
@@ -97,8 +97,9 @@ begin
 					
 				-- searching
 				when 0 =>
+					state <= 1;
+				when 1 =>
 					if signed(t_y0)<=signed(y) and signed(y)<signed(t_y1) then
-						state <= 1;
 						d <= "0000000000"&y;
 						if t_dir='0' then
 							b(17 downto 10) <= (others=>t_y0(9));
@@ -107,21 +108,24 @@ begin
 							b(17 downto 10) <= (others=>t_y1(9));
 							b( 9 downto  0) <= t_y1;
 						end if;
+						state <= 2;
 					elsif std_logic_vector(i)=max_t then
 						state <= STATE_STOP;
 					else
 						i <= i+1;
+						state <= 0;
 					end if;
 
 				-- after mult-add, wait for division to start
-				when (5+MULT_ADD_LATENCY) =>
+				when (6+MULT_ADD_LATENCY) =>
 					if divider_rfd='1' then
 						state <= state+1;
 					end if;
 					
 				-- end of computation
-				when (5+MULT_ADD_LATENCY+DIVIDER_LATENCY) =>
-						state <= STATE_READY;
+				when (7+MULT_ADD_LATENCY+DIVIDER_LATENCY) =>
+					i <= i+1;
+					state <= STATE_READY;
 						
 				-- else: computing
 				when others =>
@@ -130,16 +134,16 @@ begin
 				
 				-- mult-add input
 				case state is
-				when 1 =>
-					c <= t_x;
-					a <= t_dxl;
 				when 2 =>
 					c <= t_x;
-					a <= t_dxr;
+					a <= t_dxl;
 				when 3 =>
+					c <= t_x;
+					a <= t_dxr;
+				when 4 =>
 					c <= t_z;
 					a <= t_dzl;
-				when 4 =>
+				when 5 =>
 					c <= t_z;
 					a <= t_dzr;
 				when others =>
@@ -147,23 +151,23 @@ begin
 				
 				-- mult-add output
 				case state is
-				when (1+MULT_ADD_LATENCY) =>
-					xl_int <= p(17 downto 8);
 				when (2+MULT_ADD_LATENCY) =>
-					xr_int <= p(17 downto 8);
+					xl_int <= p(17 downto 8);
 				when (3+MULT_ADD_LATENCY) =>
-					zl_int <= p;
+					xr_int <= p(17 downto 8);
 				when (4+MULT_ADD_LATENCY) =>
+					zl_int <= p;
+				when (5+MULT_ADD_LATENCY) =>
 					zr_int <= p;
 				when others =>
 				end case;
 				
 				-- division
 				case state is
-				when (5+MULT_ADD_LATENCY) => 
+				when (7+MULT_ADD_LATENCY) => 
 					dividend <= std_logic_vector(signed(zr_int)-signed(zl_int));
 					divisor  <= std_logic_vector(signed(xr_int)-signed(xl_int));
-				when (5+MULT_ADD_LATENCY+DIVIDER_LATENCY) =>
+				when (7+MULT_ADD_LATENCY+DIVIDER_LATENCY) =>
 					dz <= quotient;
 				when others =>
 				end case;
@@ -181,9 +185,8 @@ begin
 	stop  <= '1' when state=STATE_STOP  else '0';
 	
 
-	c48(47 downto 26) <= (others=>c(11));
-	c48(25 downto  8) <= c;
-	c48( 7 downto  0) <= (others=>'0');
+	c48(47 downto 18) <= (others=>c(11));
+	c48(17 downto  0) <= c;
 	
 	p <= p48(17 downto 0);
 
