@@ -264,18 +264,18 @@
 
 			var triangles = [
 				{ a:0, b:1, c:3, color:0x000080 },
-				{ a:0, b:3, c:2, color:0xff0000 },
-				{ a:0, b:1, c:5, color:0x800000 },
-				{ a:0, b:5, c:4, color:0x0000c0 },
-				{ a:0, b:2, c:6, color:0xc00000 },
-				{ a:0, b:6, c:4, color:0x0000ff },
+				{ a:0, b:3, c:2, color:0x008000 },
+				{ a:0, b:1, c:5, color:0x008080 },
+				{ a:0, b:5, c:4, color:0x800000 },
+				{ a:0, b:2, c:6, color:0x800080 },
+				{ a:0, b:6, c:4, color:0x808000 },
 
-				{ a:4, b:5, c:7, color:0x008080 },
-				{ a:4, b:7, c:6, color:0xff8000 },
-				{ a:2, b:3, c:7, color:0x808000 },
-				{ a:2, b:7, c:6, color:0x0080c0 },
-				{ a:1, b:3, c:7, color:0xc08000 },
-				{ a:1, b:7, c:5, color:0x0080ff }
+				{ a:4, b:5, c:7, color:0x7f7fff },
+				{ a:4, b:7, c:6, color:0x7fff7f },
+				{ a:2, b:3, c:7, color:0x7fffff },
+				{ a:2, b:7, c:6, color:0xff7f7f },
+				{ a:1, b:3, c:7, color:0xff7fff },
+				{ a:1, b:7, c:5, color:0xffff7f }
 			];
 
 			// draw a segment from xl to xr on the current line
@@ -298,7 +298,7 @@
 			{
 				for (var x=0; x<256; x++) {
 					zbuffer[x] = fromNum(0);
-					cbuffer[x] = 0xffffff;
+					cbuffer[x] = 0;
 				}
 				for (var i in screen_triangles) {
 					var t = screen_triangles[i];
