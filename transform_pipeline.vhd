@@ -287,8 +287,6 @@ begin
 	
 	p_i <= std_logic_vector(p_i_i);
 	t_i <= std_logic_vector(t_i_i);
-
-	--sp_we <= p_ready_out and not clk;
 	
 	points_ram_inst: points_ram
 	port map (
@@ -297,13 +295,13 @@ begin
 		x_o	=> sp_x_i,
 		y_o	=> sp_y_i,
 		z_o	=> sp_z_i,
-		we		=> p_ready_out and not clk,
+		we		=> p_ready_out,
 		i_i	=> std_logic_vector(p_i_o),
 		x_i	=> sp_x_o,
 		y_i	=> sp_y_o,
 		z_i	=> sp_z_o);
 
-	st_we <= t_ready_out and not clk;
+	st_we <= t_ready_out;
 	st_i <= std_logic_vector(t_i_o);
 
 end Behavioral;

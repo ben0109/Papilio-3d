@@ -100,7 +100,8 @@ begin
 					state <= 1;
 				when 1 =>
 					if signed(t_y0)<=signed(y) and signed(y)<signed(t_y1) then
-						d <= "0000000000"&y;
+						d(17 downto 8) <= (others=>y(7));
+						d( 7 downto 0) <= y;
 						if t_dir='0' then
 							b(17 downto 10) <= (others=>t_y0(9));
 							b( 9 downto  0) <= t_y0;

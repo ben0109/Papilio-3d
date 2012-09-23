@@ -77,15 +77,16 @@ begin
 						state <= STATE_DRAWING;
 						queue <= '0';
 						
-						tmpx := signed(t_xl)+128;
-						if tmpx>=0  then x  <= tmpx(7 downto 0); else x  <= (others=>'0'); end if;
+						tmpx := signed(t_xl);
+						if tmpx>=-128 then x  <= tmpx(7 downto 0); else x <= "10000000"; end if;
 						
-						tmpx := signed(t_xr)+128;
-						if tmpx<256 then xr <= tmpx(7 downto 0); else xr <= (others=>'1'); end if;
+						tmpx := signed(t_xr);
+						if tmpx<+128 then xr <= tmpx(7 downto 0); else xr <= "01111111"; end if;
 						
 						a <= t_dz;
 						c <= t_zl;
-						b <= t_xl;
+						b(17 downto 9) <= (others=>t_xl(8));
+						b(9 downto 0)  <= std_logic_vector(t_xl);
 						color <= t_color;
 					end if;
 					
@@ -110,8 +111,9 @@ begin
 				case state is
 				when STATE_DRAWING | STATE_FINISH =>
 					-- prepare mult and fetch previous z
-					d <= "0000000000"&std_logic_vector(x);
-					zbuffer_x_i <= std_logic_vector(x);
+					d(17 downto 8) <= (others=>x(7));
+					d(7 downto 0)  <= std_logic_vector(x);
+					zbuffer_x_i <= std_logic_vector(x+128);
 
 					-- for next cycle...
 					x1 <= x;
@@ -119,12 +121,13 @@ begin
 					-- ...compare z, and write if closer
 					if queue='1' and signed(zbuffer_d_i)<signed(p) then
 						buffer_we   <= '1';
-						buffer_x_o  <= std_logic_vector(x1(7 downto 0));
-						cbuffer_d_o <= color;
-						zbuffer_d_o <= p;
 					else
 						buffer_we   <= '0';
 					end if;
+					
+					buffer_x_o  <= std_logic_vector(x1+128);
+					cbuffer_d_o <= color;
+					zbuffer_d_o <= p;
 					
 				when others =>
 					buffer_we   <= '0';
@@ -137,9 +140,8 @@ begin
 	stop <= '1' when state=STATE_STOP else '0';
 	
 
-	c48(47 downto 26) <= (others=>c(11));
-	c48(25 downto  8) <= c;
-	c48( 7 downto  0) <= (others=>'0');
+	c48(47 downto 18) <= (others=>c(17));
+	c48(17 downto  0) <= c;
 	
 	p <= p48(17 downto 0);
 

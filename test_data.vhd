@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 entity test_data is
 port ( 
@@ -84,9 +85,8 @@ begin
 								"101" when others;
 	t_c(8 downto 3) <= (others=>'0');
 
-	t_d(8 downto 5) <= t_i(3 downto 0);
-	t_d(4 downto 1) <= t_i(3 downto 0);
-	t_d(0) <= '0';
+	t_d(8) <= '0';
+	t_d(7 downto 0) <= std_logic_vector(unsigned(t_i(8 downto 1))+1);
 
 end Behavioral;
 
