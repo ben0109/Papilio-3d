@@ -6,11 +6,11 @@ entity buffer_clear is
 port (
 	clk			: in  STD_LOGIC;
 	reset			: in  STD_LOGIC;
-	bg_color		: in  STD_LOGIC_VECTOR (8 downto 0);
+	bg_color		: in  STD_LOGIC_VECTOR ( 8 downto 0);
 
 	buffer_we	: out STD_LOGIC;
-	buffer_x		: out STD_LOGIC_VECTOR (7 downto 0);
-	cbuffer_d	: out STD_LOGIC_VECTOR (8 downto 0);
+	buffer_x		: out STD_LOGIC_VECTOR ( 9 downto 0);
+	cbuffer_d	: out STD_LOGIC_VECTOR ( 8 downto 0);
 	zbuffer_d	: out STD_LOGIC_VECTOR (17 downto 0);
 	stop			: out STD_LOGIC);
 end buffer_clear;
@@ -18,7 +18,7 @@ end buffer_clear;
 architecture Behavioral of buffer_clear is
 
 	signal finished : std_logic := '1';
-	signal i : unsigned(7 downto 0);
+	signal i : unsigned( 9 downto 0) := (others=>'0');
 
 begin
 

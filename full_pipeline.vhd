@@ -25,13 +25,24 @@ port (
 	clk			: in  STD_LOGIC;
 	reset			: in  STD_LOGIC;
 	line_start	: in  STD_LOGIC;
-	y				: in  STD_LOGIC_VECTOR ( 7 downto 0);
+	y				: in  STD_LOGIC_VECTOR ( 9 downto 0);
 	buffer_we	: out STD_LOGIC;
-	buffer_x		: out STD_LOGIC_VECTOR ( 7 downto 0);
+	buffer_x		: out STD_LOGIC_VECTOR ( 9 downto 0);
 	buffer_d		: out STD_LOGIC_VECTOR ( 8 downto 0));
 end full_pipeline;
 
 architecture Behavioral of full_pipeline is
+	
+	component divider is
+	generic (
+		SIZE		: integer;
+		FRAC		: integer );
+	port (
+		clk		: in  STD_LOGIC;
+		dividend	: in  STD_LOGIC_VECTOR ((SIZE-1) downto 0);
+		divisor	: in  STD_LOGIC_VECTOR ((SIZE-1) downto 0);
+		quotient	: out STD_LOGIC_VECTOR ((SIZE+FRAC-1) downto 0) );
+	end component;
 
 	component transform_pipeline is
 	port (
@@ -52,6 +63,10 @@ architecture Behavioral of full_pipeline is
 		t_b		: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		t_c		: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		t_d		: in  STD_LOGIC_VECTOR ( 8 downto 0);
+	
+		dividend : out STD_LOGIC_VECTOR (17 downto 0);
+		divisor	: out STD_LOGIC_VECTOR (17 downto 0);
+		quotient	: in  STD_LOGIC_VECTOR (17 downto 0);
 
 		st_we		: out STD_LOGIC;
 		st_i		: out STD_LOGIC_VECTOR ( 9 downto 0);
@@ -71,7 +86,7 @@ architecture Behavioral of full_pipeline is
 	port (
 		clk		: in  STD_LOGIC;
 		reset		: in  STD_LOGIC;
-		y			: in  STD_LOGIC_VECTOR (7 downto 0);
+		y			: in  STD_LOGIC_VECTOR ( 9 downto 0);
 
 		max_t		: in  STD_LOGIC_VECTOR ( 9 downto 0);
 		t_i		: out STD_LOGIC_VECTOR ( 9 downto 0);
@@ -85,13 +100,27 @@ architecture Behavioral of full_pipeline is
 		t_dzl		: in  STD_LOGIC_VECTOR (17 downto 0);
 		t_dzr		: in  STD_LOGIC_VECTOR (17 downto 0);
 		t_color	: in  STD_LOGIC_VECTOR ( 8 downto 0);
+	
+		dividend : out STD_LOGIC_VECTOR (17 downto 0);
+		divisor	: out STD_LOGIC_VECTOR (17 downto 0);
+		quotient	: in  STD_LOGIC_VECTOR (17 downto 0);
 		
 		buffer_we: out STD_LOGIC;
-		buffer_x	: out STD_LOGIC_VECTOR (7 downto 0);
-		buffer_d	: out STD_LOGIC_VECTOR (8 downto 0);
+		buffer_x	: out STD_LOGIC_VECTOR ( 9 downto 0);
+		buffer_d	: out STD_LOGIC_VECTOR ( 8 downto 0);
 		
 		stop			: out STD_LOGIC);
 	end component;
+	
+	signal dividend	: std_logic_vector(17 downto 0);
+	signal divisor		: std_logic_vector(17 downto 0);
+	signal quotient	: std_logic_vector(25 downto 0);
+	
+	signal t_dividend	: std_logic_vector(17 downto 0);
+	signal t_divisor	: std_logic_vector(17 downto 0);
+	
+	signal d_dividend	: std_logic_vector(17 downto 0);
+	signal d_divisor	: std_logic_vector(17 downto 0);
 	
 	signal max_t			: STD_LOGIC_VECTOR(9 downto 0);
 	signal transform_stop: STD_LOGIC;
@@ -123,17 +152,21 @@ architecture Behavioral of full_pipeline is
 	signal st_color_o	: STD_LOGIC_VECTOR ( 8 downto 0);
 	
 	signal st_we		: STD_LOGIC;
-	signal st_i			: STD_LOGIC_VECTOR ( 8 downto 0);
-	signal ram0_i		: STD_LOGIC_VECTOR (35 downto 0);
-	signal ram1_i		: STD_LOGIC_VECTOR (35 downto 0);
-	signal ram2_i		: STD_LOGIC_VECTOR (35 downto 0);
-	signal ram3_i		: STD_LOGIC_VECTOR (35 downto 0);
-	signal ram0_o		: STD_LOGIC_VECTOR (35 downto 0);
-	signal ram1_o		: STD_LOGIC_VECTOR (35 downto 0);
-	signal ram2_o		: STD_LOGIC_VECTOR (35 downto 0);
-	signal ram3_o		: STD_LOGIC_VECTOR (35 downto 0);
+	signal st_i			: STD_LOGIC_VECTOR (  9 downto 0);
+	signal ram_i		: STD_LOGIC_VECTOR (143 downto 0);
+	signal ram_o		: STD_LOGIC_VECTOR (143 downto 0);
 
 begin
+		
+	divider_inst: divider
+	generic map (
+		SIZE		=> 18,
+		FRAC		=> 8 )
+	port map (
+		clk		=> clk,
+		dividend	=> dividend,
+		divisor	=> divisor,
+		quotient	=> quotient );
 
 	transform_pipeline_inst: transform_pipeline
 	port map (
@@ -155,6 +188,10 @@ begin
 		t_b		=> t_b,
 		t_c		=> t_c,
 		t_d		=> t_d,
+	
+		dividend => t_dividend,
+		divisor	=> t_divisor,
+		quotient	=> quotient(17 downto 0),
 
 		st_we		=> st_we,
 		st_i		=> st_i_i,
@@ -187,12 +224,19 @@ begin
 		t_dzl			=> st_dzl_o,
 		t_dzr			=> st_dzr_o,
 		t_color		=> st_color_o,
+	
+		dividend 	=> d_dividend,
+		divisor		=> d_divisor,
+		quotient		=> quotient(17 downto 0),
 		
 		buffer_we	=> buffer_we,
 		buffer_x		=> buffer_x,
 		buffer_d		=> buffer_d,
 		
 		stop			=> open);
+		
+	dividend <= t_dividend when transform_stop='0' else d_dividend;
+	divisor  <= t_divisor  when transform_stop='0' else d_divisor;
 		
 	process (clk)
 	begin
@@ -205,79 +249,45 @@ begin
 		end if;
 	end process;
 		
-	-- TODO use 10 bits
-	st_i <= st_i_i(8 downto 0) when transform_stop='0' else st_i_o(8 downto 0);
+	st_i <= st_i_i when transform_stop='0' else st_i_o;
 		
-	ram0_i(35 downto 30) <= (others=>'0');
-	ram0_i(29 downto 20) <= st_y0_i;
-	ram0_i(19 downto 10) <= st_y1_i;
-	ram0_i(9)            <= st_dir_i;
-	ram0_i( 8 downto  0) <= st_color_i;
-	ram1_i(35 downto 18) <= st_x_i;
-	ram1_i(17 downto  0) <= st_z_i;
-	ram2_i(35 downto 18) <= st_dxl_i;
-	ram2_i(17 downto  0) <= st_dxr_i;
-	ram3_i(35 downto 18) <= st_dzl_i;
-	ram3_i(17 downto  0) <= st_dzr_i;
+	ram_i(143 downto 138) <= (others=>'0');
+	ram_i(137)            <= st_dir_i;
+	ram_i(136 downto 127) <= st_y0_i;
+	ram_i(126 downto 117) <= st_y1_i;
+	ram_i(116 downto 108) <= st_color_i;
+	ram_i(107 downto  90) <= st_x_i;
+	ram_i( 89 downto  72) <= st_z_i;
+	ram_i( 71 downto  54) <= st_dxl_i;
+	ram_i( 53 downto  36) <= st_dxr_i;
+	ram_i( 35 downto  18) <= st_dzl_i;
+	ram_i( 17 downto   0) <= st_dzr_i;
 	
-	st_y0_o    <= ram0_o(29 downto 20);
-	st_y1_o    <= ram0_o(19 downto 10);
-	st_dir_o   <= ram0_o(9);
-	st_color_o <= ram0_o(8 downto 0);
-	st_x_o     <= ram1_o(35 downto 18);
-	st_z_o     <= ram1_o(17 downto  0);
-	st_dxl_o   <= ram2_o(35 downto 18);
-	st_dxr_o   <= ram2_o(17 downto  0);
-	st_dzl_o   <= ram3_o(35 downto 18);
-	st_dzr_o   <= ram3_o(17 downto  0);
+	st_dir_o   <= ram_o(137);
+	st_y0_o    <= ram_o(136 downto 127);
+	st_y1_o    <= ram_o(126 downto 117);
+	st_color_o <= ram_o(116 downto 108);
+	st_x_o     <= ram_o(107 downto  90);
+	st_z_o     <= ram_o( 89 downto  72);
+	st_dxl_o   <= ram_o( 71 downto  54);
+	st_dxr_o   <= ram_o( 53 downto  36);
+	st_dzl_o   <= ram_o( 35 downto  18);
+	st_dzr_o   <= ram_o( 17 downto   0);
 	
-	ram0: RAMB16_S36
-	port map (
-		clk  => clk,
-		ssr  => '0',
-		en   => '1',
-		we   => st_we,
-		addr => st_i,
-		di   => ram0_i(31 downto 0),
-		dip  => ram0_i(35 downto 32),
-		do   => ram0_o(31 downto 0),
-		dop  => ram0_o(35 downto 32));
-	
-	ram1: RAMB16_S36
-	port map (
-		clk  => clk,
-		ssr  => '0',
-		en   => '1',
-		we   => st_we,
-		addr => st_i,
-		di   => ram1_i(31 downto 0),
-		dip  => ram1_i(35 downto 32),
-		do   => ram1_o(31 downto 0),
-		dop  => ram1_o(35 downto 32));
-	
-	ram2: RAMB16_S36
-	port map (
-		clk  => clk,
-		ssr  => '0',
-		en   => '1',
-		we   => st_we,
-		addr => st_i,
-		di   => ram2_i(31 downto 0),
-		dip  => ram2_i(35 downto 32),
-		do   => ram2_o(31 downto 0),
-		dop  => ram2_o(35 downto 32));
-	
-	ram3: RAMB16_S36
-	port map (
-		clk  => clk,
-		ssr  => '0',
-		en   => '1',
-		we   => st_we,
-		addr => st_i,
-		di   => ram3_i(31 downto 0),
-		dip  => ram3_i(35 downto 32),
-		do   => ram3_o(31 downto 0),
-		dop  => ram3_o(35 downto 32));
+	ram: for i in 0 to 7
+	generate
+		inst: RAMB16_S18
+		port map (
+			clk  => clk,
+			ssr  => '0',
+			en   => '1',
+			we   => st_we,
+			addr => st_i,
+			di   => ram_i((18*i+15) downto (18*i+ 0)),
+			dip  => ram_i((18*i+17) downto (18*i+16)),
+			do   => ram_o((18*i+15) downto (18*i+ 0)),
+			dop  => ram_o((18*i+17) downto (18*i+16)));
+	end generate;
 	
 end Behavioral;
 

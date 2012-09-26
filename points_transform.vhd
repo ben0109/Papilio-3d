@@ -41,7 +41,7 @@ architecture Behavioral of points_transform is
 	
 	constant MULT_ACC_LATENCY : integer := 3;
 	constant MATRIX_LATENCY : integer := MULT_ACC_LATENCY+2;	
-	constant DIVIDER_LATENCY : integer := 31;
+	constant DIVIDER_LATENCY : integer := 29;
 	
 	constant START_PROJ		: integer := 0;
 	constant END_PROJ			: integer := START_PROJ+MATRIX_LATENCY;
@@ -85,13 +85,14 @@ architecture Behavioral of points_transform is
 	signal pull_in_int : std_logic;
 	signal ready_out_int : std_logic;
 	signal queue : std_logic_vector((END_PROCESS+1) downto 0) := (others=>'0');
+	constant EMPTY : std_logic_vector(queue'range) := (others=>'0');
 
 begin
 
 	pull_in_int <= (ready_in and not reset) when queue(1 downto 0)="00" else '0';
 	ready_out_int <= queue(END_PROCESS+1);
 	ready_out <= ready_out_int;
-	stop_out <= stop_in when queue="0000000000000000000000000000000000000000" else '0';
+	stop_out <= stop_in when queue=EMPTY else '0';
 	
 	process (clk)
 	begin

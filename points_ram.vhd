@@ -6,15 +6,15 @@ use UNISIM.VComponents.all;
 entity points_ram is
 port (
 	clk	: in  STD_LOGIC;
-	we		: in  STD_LOGIC;
-	i_i	: in  STD_LOGIC_VECTOR (8 downto 0);
-	x_i	: in  STD_LOGIC_VECTOR (17 downto 0);
-	y_i	: in  STD_LOGIC_VECTOR (17 downto 0);
-	z_i	: in  STD_LOGIC_VECTOR (17 downto 0);
-	i_o	: in  STD_LOGIC_VECTOR (8 downto 0);
+	i_o	: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	x_o	: out STD_LOGIC_VECTOR (17 downto 0);
 	y_o	: out STD_LOGIC_VECTOR (17 downto 0);
-	z_o	: out STD_LOGIC_VECTOR (17 downto 0));
+	z_o	: out STD_LOGIC_VECTOR (17 downto 0);
+	we		: in  STD_LOGIC;
+	i_i	: in  STD_LOGIC_VECTOR ( 8 downto 0);
+	x_i	: in  STD_LOGIC_VECTOR (17 downto 0);
+	y_i	: in  STD_LOGIC_VECTOR (17 downto 0);
+	z_i	: in  STD_LOGIC_VECTOR (17 downto 0));
 end points_ram;
 
 architecture Behavioral of points_ram is

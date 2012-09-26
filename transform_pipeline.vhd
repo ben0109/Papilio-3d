@@ -26,6 +26,10 @@ port (
 	t_b		: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	t_c		: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	t_d		: in  STD_LOGIC_VECTOR ( 8 downto 0);
+	
+	dividend : out STD_LOGIC_VECTOR (17 downto 0);
+	divisor	: out STD_LOGIC_VECTOR (17 downto 0);
+	quotient	: in  STD_LOGIC_VECTOR (17 downto 0);
 
 	st_we		: out STD_LOGIC;
 	st_i		: out STD_LOGIC_VECTOR ( 9 downto 0);
@@ -42,16 +46,6 @@ port (
 end transform_pipeline;
 
 architecture Behavioral of transform_pipeline is
-	
-	component divider is
-	port (
-		clk			: in  STD_LOGIC;
-		dividend		: in  STD_LOGIC_VECTOR(25 downto 0);
-		divisor		: in  STD_LOGIC_VECTOR(17 downto 0);
-		rfd			: out STD_LOGIC;
-		quotient		: out STD_LOGIC_VECTOR(25 downto 0);
-		fractional	: out STD_LOGIC_VECTOR(17 downto 0));
-	end component;
 
 	component points_ram is
 	port (
@@ -156,10 +150,6 @@ architecture Behavioral of transform_pipeline is
 	signal sp_y_o		: STD_LOGIC_VECTOR (17 downto 0);
 	signal sp_z_o		: STD_LOGIC_VECTOR (17 downto 0);
 	
-	signal dividend	: std_logic_vector(17 downto 0);
-	signal divisor		: std_logic_vector(17 downto 0);
-	signal quotient	: std_logic_vector(25 downto 0);
-	
 	signal p_dividend	: std_logic_vector(17 downto 0);
 	signal p_divisor	: std_logic_vector(17 downto 0);
 	
@@ -167,15 +157,6 @@ architecture Behavioral of transform_pipeline is
 	signal t_divisor	: std_logic_vector(17 downto 0);
 
 begin
-		
-	divider_inst: divider
-	port map (
-		clk => clk,
-		dividend => dividend&"00000000",
-		divisor => divisor,
-		rfd => open,
-		quotient => quotient,
-		fractional => open);
 		
 	dividend <= p_dividend when p_stop_out='0' else t_dividend;
 	divisor  <= p_divisor  when p_stop_out='0' else t_divisor;
@@ -195,7 +176,7 @@ begin
 	
 		dividend => p_dividend,
 		divisor	=> p_divisor,
-		quotient	=> quotient(17 downto 0),
+		quotient	=> quotient,
 			
 		ready_out=> p_ready_out,
 		stop_out	=> p_stop_out,
@@ -224,7 +205,7 @@ begin
 	
 		dividend => t_dividend,
 		divisor	=> t_divisor,
-		quotient	=> quotient(17 downto 0),
+		quotient	=> quotient,
 		
 		ready_out=> t_ready_out,
 		stop_out	=> stop,

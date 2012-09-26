@@ -22,23 +22,31 @@
 #       [C15] P134         [B15] P47    P48 [A00] [GND]
 
 ## Prohibit the automatic placement of pins that are connected to VCC or GND for configuration.
-CONFIG PROHIBIT=P144;
-CONFIG PROHIBIT=P69;
-CONFIG PROHIBIT=P60;
+CONFIG PROHIBIT = P144;
+CONFIG PROHIBIT = P69;
+CONFIG PROHIBIT = P60;
 
-NET PAPILIO_CLK	LOC="P94"  | IOSTANDARD=LVTTL | PERIOD=31.25ns;               # CLK
+# CLK
+NET "PAPILIO_CLK" PERIOD = 31.25 ns;
+NET "papilio_clk" IOSTANDARD = LVTTL;
+NET "papilio_clk" LOC = P94;
 
 #NET RX				LOC="P101" | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # RX
 #NET TX				LOC="P105" | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST | PULLUP; # TX
 
-NET "vsync"			LOC="P48"  | IOSTANDARD=LVTTL ;
-NET "hsync"			LOC="P51"  | IOSTANDARD=LVTTL ;
-NET "blue"			LOC="P56"  | IOSTANDARD=LVTTL ;
+NET "vsync" IOSTANDARD = LVTTL;
+NET "vsync" LOC = P48;
+NET "hsync" IOSTANDARD = LVTTL;
+NET "hsync" LOC = P51;
+NET "blue" IOSTANDARD = LVTTL;
+NET "blue" LOC = P56;
 #NET A(3)			LOC="P58"  | IOSTANDARD=LVTTL ;
 #NET A(4)			LOC="P61"  | IOSTANDARD=LVTTL ;
 #NET A(5)			LOC="P66"  | IOSTANDARD=LVTTL ;
-NET "green"			LOC="P67"  | IOSTANDARD=LVTTL ;
-NET "red"			LOC="P75"  | IOSTANDARD=LVTTL ;
+NET "green" IOSTANDARD = LVTTL;
+NET "green" LOC = P67;
+NET "red" IOSTANDARD = LVTTL;
+NET "red" LOC = P75;
 
 #NET A(8)			LOC="P79"  | IOSTANDARD=LVTTL;                                # A8
 #NET A(9)			LOC="P81"  | IOSTANDARD=LVTTL;                                # A9
@@ -136,3 +144,9 @@ NET "red"			LOC="P75"  | IOSTANDARD=LVTTL ;
 #NET FLASH_CK LOC="P70"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # FLASH_CK
 #NET FLASH_SI LOC="P64"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # FLASH_SI
 #NET FLASH_SO LOC="P65"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST | PULLUP; # FLASH_SO
+
+# PlanAhead Generated physical constraints 
+
+#INST "points_ram_inst/ram0" LOC = RAMB16_X0Y0;
+#INST "points_ram_inst/ram1" LOC = RAMB16_X0Y2;
+#INST "triangle_ram_inst/ram" LOC = RAMB16_X0Y4;

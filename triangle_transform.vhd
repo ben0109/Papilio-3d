@@ -41,17 +41,7 @@ end triangle_transform;
 
 architecture Behavioral of triangle_transform is
 	
-	component divider is
-	port (
-		clk			: in  STD_LOGIC;
-		dividend		: in  STD_LOGIC_VECTOR(25 downto 0);
-		divisor		: in  STD_LOGIC_VECTOR(17 downto 0);
-		rfd			: out STD_LOGIC;
-		quotient		: out STD_LOGIC_VECTOR(25 downto 0);
-		fractional	: out STD_LOGIC_VECTOR(17 downto 0));
-	end component;
-	
-	constant DIVIDER_LATENCY : integer := 31;
+	constant DIVIDER_LATENCY : integer := 29;
 
 	signal ax : std_logic_vector(17 downto 0);
 	signal ay : std_logic_vector(17 downto 0);
@@ -137,7 +127,7 @@ architecture Behavioral of triangle_transform is
 
 	signal pull_in_int : std_logic;
 	signal queue : std_logic_vector((DIVIDER_LATENCY+13) downto 0);
-	constant EMPTY : std_logic_vector((DIVIDER_LATENCY+13) downto 0) := (others=>'0');
+	constant EMPTY : std_logic_vector(queue'range) := (others=>'0');
 
 begin
 		
@@ -269,7 +259,7 @@ begin
 					color_5 <= color_4;
 				end if;
 				
-				if queue(40)='1' then
+				if queue(39)='1' then
 					x0_6 <= x0_5;
 					y0_6 <= y0_5;
 					z0_6 <= z0_5;
@@ -279,7 +269,7 @@ begin
 					z2_6 <= z2_5;
 					color_6 <= color_5;
 				end if;
-				
+								
 				-- compute deltas
 				case queue(10 downto 5) is
 				when "000001" =>				

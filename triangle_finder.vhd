@@ -9,7 +9,7 @@ entity triangle_finder is
 port (
 	clk		: in  STD_LOGIC;
 	reset 	: in  STD_LOGIC;
-	y			: in  STD_LOGIC_VECTOR ( 7 downto 0); -- 8 bit signed coordinates (0 is middle of screen)
+	y			: in  STD_LOGIC_VECTOR ( 9 downto 0); -- 10 bit signed coordinates (0 is middle of screen)
 	
 	max_t		: in  STD_LOGIC_VECTOR ( 9 downto 0);
 	t_i		: out STD_LOGIC_VECTOR ( 9 downto 0);
@@ -24,6 +24,10 @@ port (
 	t_dzr		: in  STD_LOGIC_VECTOR (17 downto 0);
 	t_color	: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	
+	dividend : out STD_LOGIC_VECTOR (17 downto 0);
+	divisor	: out STD_LOGIC_VECTOR (17 downto 0);
+	quotient	: in  STD_LOGIC_VECTOR (17 downto 0);
+	
 	ready		: out STD_LOGIC;
 	stop		: out STD_LOGIC;
 	pull		: in  STD_LOGIC;
@@ -35,19 +39,9 @@ port (
 end triangle_finder;
 
 architecture Behavioral of triangle_finder is
-	
-	component divider_small is
-	port (
-		clk			: in  STD_LOGIC;
-		dividend		: in  STD_LOGIC_VECTOR(17 downto 0);
-		divisor		: in  STD_LOGIC_VECTOR( 9 downto 0);
-		rfd			: out STD_LOGIC;
-		quotient		: out STD_LOGIC_VECTOR(17 downto 0);
-		fractional	: out STD_LOGIC_VECTOR( 9 downto 0));
-	end component;
 
 	constant MULT_ADD_LATENCY : integer := 3;
-	constant DIVIDER_LATENCY : integer := 30;
+	constant DIVIDER_LATENCY : integer := 29;
 	
 	constant STATE_READY : integer := MULT_ADD_LATENCY+DIVIDER_LATENCY+15;
 	constant STATE_STOP : integer := MULT_ADD_LATENCY+DIVIDER_LATENCY+16;
@@ -68,11 +62,6 @@ architecture Behavioral of triangle_finder is
 	
 	signal c48 : std_logic_vector(47 downto 0);
 	signal p48 : std_logic_vector(47 downto 0);
-	
-	signal divider_rfd : std_logic;
-	signal dividend : std_logic_vector(17 downto 0);
-	signal divisor  : std_logic_vector( 9 downto 0);
-	signal quotient : std_logic_vector(17 downto 0);
 
 begin
 
@@ -100,8 +89,8 @@ begin
 					state <= 1;
 				when 1 =>
 					if signed(t_y0)<=signed(y) and signed(y)<signed(t_y1) then
-						d(17 downto 8) <= (others=>y(7));
-						d( 7 downto 0) <= y;
+						d(17 downto 10) <= (others=>y(9));
+						d( 9 downto  0) <= y;
 						if t_dir='0' then
 							b(17 downto 10) <= (others=>t_y0(9));
 							b( 9 downto  0) <= t_y0;
@@ -115,12 +104,6 @@ begin
 					else
 						i <= i+1;
 						state <= 0;
-					end if;
-
-				-- after mult-add, wait for division to start
-				when (6+MULT_ADD_LATENCY) =>
-					if divider_rfd='1' then
-						state <= state+1;
 					end if;
 					
 				-- end of computation
@@ -167,9 +150,10 @@ begin
 				case state is
 				when (7+MULT_ADD_LATENCY) => 
 					dividend <= std_logic_vector(signed(zr_int)-signed(zl_int));
-					divisor  <= std_logic_vector(signed(xr_int)-signed(xl_int));
+					divisor  <= std_logic_vector(signed(xr_int)-signed(xl_int))&"00000000";
 				when (7+MULT_ADD_LATENCY+DIVIDER_LATENCY) =>
 					dz <= quotient;
+					color <= t_color;
 				when others =>
 				end case;
 			end if;
@@ -180,7 +164,6 @@ begin
 	xl <= xl_int;
 	xr <= xr_int;
 	zl <= zl_int;
-	color <= t_color;
 	
 	ready <= '1' when state=STATE_READY else '0';
 	stop  <= '1' when state=STATE_STOP  else '0';
@@ -248,15 +231,6 @@ begin
       RSTOPMODE => '0',
       RSTP => '0'
    );
-	
-	divider_inst: divider_small
-	port map (
-		clk			=> clk,
-		dividend		=> dividend,
-		divisor		=> divisor,
-		rfd			=> divider_rfd,
-		quotient		=> quotient,
-		fractional	=> open);
 
 end Behavioral;
 

@@ -9,22 +9,21 @@ entity line_drawer is
 port (
 	clk			: in  STD_LOGIC;
 	reset			: in  STD_LOGIC;
-	y				: in  STD_LOGIC_VECTOR (7 downto 0);
 	
 	t_ready		: in  STD_LOGIC;
 	t_stop		: in  STD_LOGIC;
 	t_pull		: out STD_LOGIC;
-	t_xl			: in  STD_LOGIC_VECTOR (9 downto 0);
-	t_xr			: in  STD_LOGIC_VECTOR (9 downto 0);
+	t_xl			: in  STD_LOGIC_VECTOR ( 9 downto 0);
+	t_xr			: in  STD_LOGIC_VECTOR ( 9 downto 0);
 	t_zl			: in  STD_LOGIC_VECTOR (17 downto 0);
 	t_dz			: in  STD_LOGIC_VECTOR (17 downto 0);
-	t_color		: in  STD_LOGIC_VECTOR (8 downto 0);
+	t_color		: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	
-	zbuffer_x_i	: out STD_LOGIC_VECTOR ( 7 downto 0);
+	zbuffer_x_i	: out STD_LOGIC_VECTOR ( 9 downto 0);
 	zbuffer_d_i	: in  STD_LOGIC_VECTOR (17 downto 0);
 	
 	buffer_we	: out STD_LOGIC;
-	buffer_x_o	: out STD_LOGIC_VECTOR ( 7 downto 0);
+	buffer_x_o	: out STD_LOGIC_VECTOR ( 9 downto 0);
 	cbuffer_d_o	: out STD_LOGIC_VECTOR ( 8 downto 0);
 	zbuffer_d_o	: out STD_LOGIC_VECTOR (17 downto 0);
 	
@@ -40,9 +39,9 @@ architecture Behavioral of line_drawer is
 
 	signal state : integer;
 	
-	signal x1 : signed(7 downto 0);
-	signal x  : signed(7 downto 0);
-	signal xr : signed(7 downto 0);
+	signal x1 : signed( 9 downto 0);
+	signal x  : signed( 9 downto 0);
+	signal xr : signed( 9 downto 0);
 	signal z  : signed(17 downto 0);
 	signal dz : signed(17 downto 0);
 	signal color : STD_LOGIC_VECTOR (8 downto 0);
@@ -78,20 +77,20 @@ begin
 						queue <= '0';
 						
 						tmpx := signed(t_xl);
-						if tmpx>=-128 then x  <= tmpx(7 downto 0); else x <= "10000000"; end if;
+						if tmpx>=-128 then x  <= tmpx(9 downto 0); else x <= "1110000000"; end if;
 						
 						tmpx := signed(t_xr);
-						if tmpx<+128 then xr <= tmpx(7 downto 0); else xr <= "01111111"; end if;
+						if tmpx<+128 then xr <= tmpx(9 downto 0); else xr <= "0001111111"; end if;
 						
 						a <= t_dz;
 						c <= t_zl;
-						b(17 downto 9) <= (others=>t_xl(8));
-						b(9 downto 0)  <= std_logic_vector(t_xl);
+						b(17 downto 9) <= (others=>t_xl(9));
+						b( 9 downto 0)  <= std_logic_vector(t_xl);
 						color <= t_color;
 					end if;
 					
 				when STATE_DRAWING =>
-					if x=xr then
+					if x>=xr then
 						if queue='0' then
 							state <= STATE_FINISH;
 						end if;
@@ -111,8 +110,8 @@ begin
 				case state is
 				when STATE_DRAWING | STATE_FINISH =>
 					-- prepare mult and fetch previous z
-					d(17 downto 8) <= (others=>x(7));
-					d(7 downto 0)  <= std_logic_vector(x);
+					d(17 downto 10) <= (others=>x(9));
+					d( 9 downto  0) <= std_logic_vector(x);
 					zbuffer_x_i <= std_logic_vector(x+128);
 
 					-- for next cycle...
