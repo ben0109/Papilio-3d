@@ -144,9 +144,3 @@ NET "red" LOC = P75;
 #NET FLASH_CK LOC="P70"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # FLASH_CK
 #NET FLASH_SI LOC="P64"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # FLASH_SI
 #NET FLASH_SO LOC="P65"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST | PULLUP; # FLASH_SO
-
-# PlanAhead Generated physical constraints 
-
-#INST "points_ram_inst/ram0" LOC = RAMB16_X0Y0;
-#INST "points_ram_inst/ram1" LOC = RAMB16_X0Y2;
-#INST "triangle_ram_inst/ram" LOC = RAMB16_X0Y4;

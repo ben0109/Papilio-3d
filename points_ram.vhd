@@ -26,16 +26,31 @@ architecture Behavioral of points_ram is
 
 begin
 
-	a0(35 downto 18) <= (others=>'0');
-	a0(17 downto  0) <= x_i;
-	a1(35 downto 18) <= y_i;
-	a1(17 downto  0) <= z_i;
+	a1(35 downto 34) <= (others=>'0');
+	a1(31 downto 16) <= (others=>'0');
 
-	x_o <= b0(17 downto  0);
-	y_o <= b1(35 downto 18);
-	z_o <= b1(17 downto  0);
+	a1(33 downto 32) <= z_i(17 downto 16);
+	a1(15 downto  0) <= z_i(15 downto  0);
+
+	a0(35 downto 34) <= y_i(17 downto 16);
+	a0(31 downto 16) <= y_i(15 downto  0);
+
+	a0(33 downto 32) <= x_i(17 downto 16);
+	a0(15 downto  0) <= x_i(15 downto  0);
+
+	z_o(17 downto 16) <= b1(33 downto 32);
+	z_o(15 downto  0) <= b1(15 downto  0);
+
+	y_o(17 downto 16) <= b0(35 downto 34);
+	y_o(15 downto  0) <= b0(31 downto 16);
+
+	x_o(17 downto 16) <= b0(33 downto 32);
+	x_o(15 downto  0) <= b0(15 downto  0);
 
 	ram0: RAMB16_S36_S36
+	generic map (
+		INIT_00 => X"0100010001000100ff000100ff0001000100ff000100ff00ff00ff00ff00ff00",
+		INITP_00 => X"0000000000000000000000000000000000000000000000000000000000cc33ff" )
 	port map (
 		clkA => clk,
 		ssrA => '0',
@@ -58,6 +73,9 @@ begin
 		dopB => b0(35 downto 32));
 
 	ram1: RAMB16_S36_S36
+	generic map (
+		INIT_00 => X"000001000000ff00000001000000ff00000001000000ff00000001000000ff00",
+		INITP_00 => X"0000000000000000000000000000000000000000000000000000000003030303" )
 	port map (
 		clkA => clk,
 		ssrA => '0',

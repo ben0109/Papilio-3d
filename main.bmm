@@ -1,0 +1,14 @@
+ADDRESS_SPACE points RAMB18 WORD_ADDRESSING [0x000:0x7FF]
+    BUS_BLOCK
+        points_ram_inst/ram0 RAMB18 [0:17] [0:1023];
+    END_BUS_BLOCK;
+    BUS_BLOCK
+        points_ram_inst/ram1 RAMB18 [0:17] [0:1023];
+    END_BUS_BLOCK;
+END_ADDRESS_SPACE;
+
+ADDRESS_SPACE triangles RAMB18 WORD_ADDRESSING [0x000:0x7FF]
+    BUS_BLOCK
+        triangle_ram_inst/ram RAMB18 [0:8] [0:2047];
+    END_BUS_BLOCK;
+END_ADDRESS_SPACE;

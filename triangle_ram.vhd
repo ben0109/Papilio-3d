@@ -26,17 +26,39 @@ architecture Behavioral of triangle_ram is
 
 begin
 
-	i(35 downto 27) <= a_i;
-	i(26 downto 18) <= b_i;
-	i(17 downto  9) <= c_i;
-	i( 8 downto  0) <= d_i;
+	i(35 downto 35) <= d_i(8 downto 8);
+	i(31 downto 24) <= d_i(7 downto 0);
 
-	a_o <= o(35 downto 27);
-	b_o <= o(26 downto 18);
-	c_o <= o(17 downto  9);
-	d_o <= o( 8 downto  0);
+	i(34 downto 34) <= c_i(8 downto 8);
+	i(23 downto 16) <= c_i(7 downto 0);
+
+	i(33 downto 33) <= b_i(8 downto 8);
+	i(15 downto  8) <= b_i(7 downto 0);
+
+	i(32 downto 32) <= a_i(8 downto 8);
+	i( 7 downto  0) <= a_i(7 downto 0);
+
+	d_o(8 downto 8) <= o(35 downto 35);
+	d_o(7 downto 0) <= o(31 downto 24);
+
+	c_o(8 downto 8) <= o(34 downto 34);
+	c_o(7 downto 0) <= o(23 downto 16);
+	
+	b_o(8 downto 8) <= o(33 downto 33);
+	b_o(7 downto 0) <= o(15 downto  8);
+
+	a_o(8 downto 8) <= o(32 downto 32);
+	a_o(7 downto 0) <= o( 7 downto  0);
 
 	ram: RAMB16_S36_S36
+	generic map (
+		INIT_00	=> X"0406070404070504030406000306020002040500020501000102030001030100",
+		INIT_01	=> X"0000000000000000000000000000000006050701060703010506070205070302",
+--		...
+		INIT_3F	=> X"0000000000000000000000000000000000000000000000000000000000000000",
+		INITP_00	=> X"0000000000000000000000000000000000000000000000000000000000000000",
+--		...
+		INITP_07	=> X"0000000000000000000000000000000000000000000000000000000000000000" )
 	port map (
 		clkA => clk,
 		ssrA => '0',
