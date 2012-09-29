@@ -1,0 +1,9 @@
+*.exe
+*.prj
+*.html
+*.log
+planAhead_run*
+isim/*
+_xmsgs/*
+iseconfig/*
+
