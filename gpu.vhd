@@ -8,11 +8,13 @@ entity gpu is
 port (
 	matrix		: in  STD_LOGIC_VECTOR ((16*18-1) downto 0);
 	
+	p_we			: in  STD_LOGIC;
 	p_i			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	p_x			: in  STD_LOGIC_VECTOR (17 downto 0);
 	p_y			: in  STD_LOGIC_VECTOR (17 downto 0);
 	p_z			: in  STD_LOGIC_VECTOR (17 downto 0);
 	
+	t_we			: in  STD_LOGIC;
 	t_i			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	t_a			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	t_b			: in  STD_LOGIC_VECTOR ( 8 downto 0);
@@ -132,31 +134,35 @@ begin
 
 	triangle_ram_inst: triangle_ram
 	port map (
-		clk	=> not gpu_clk,	
+		clk	=> not gpu_clk,
+		
 		i_o	=> int_t_i,
 		a_o	=> int_t_a,
 		b_o	=> int_t_b,
 		c_o	=> int_t_c,
 		d_o	=> int_t_d,
-		we		=> '0',
-		i_i	=> (others=>'0'),
-		a_i	=> (others=>'0'),
-		b_i	=> (others=>'0'),
-		c_i	=> (others=>'0'),
-		d_i	=> (others=>'0'));
+		
+		we		=> t_we,
+		i_i	=> t_i,
+		a_i	=> t_a,
+		b_i	=> t_b,
+		c_i	=> t_c,
+		d_i	=> t_d);
 	
 	points_ram_inst: points_ram
 	port map (
 		clk	=> not gpu_clk,
+		
 		i_o	=> int_p_i,
 		x_o	=> int_p_x,
 		y_o	=> int_p_y,
 		z_o	=> int_p_z,
-		we		=> '0',
-		i_i	=> (others=>'0'),
-		x_i	=> (others=>'0'),
-		y_i	=> (others=>'0'),
-		z_i	=> (others=>'0'));
+		
+		we		=> p_we,
+		i_i	=> p_i,
+		x_i	=> p_x,
+		y_i	=> p_y,
+		z_i	=> p_z);
 	
 	color <= ram_even_o when y(0)='0' else ram_odd_o;
 

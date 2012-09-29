@@ -28,11 +28,13 @@ architecture Behavioral of main is
 	port (
 		matrix		: in  STD_LOGIC_VECTOR ((16*18-1) downto 0);
 		
+		p_we			: in  STD_LOGIC;
 		p_i			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		p_x			: in  STD_LOGIC_VECTOR (17 downto 0);
 		p_y			: in  STD_LOGIC_VECTOR (17 downto 0);
 		p_z			: in  STD_LOGIC_VECTOR (17 downto 0);
 		
+		t_we			: in  STD_LOGIC;
 		t_i			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		t_a			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		t_b			: in  STD_LOGIC_VECTOR ( 8 downto 0);
@@ -89,11 +91,13 @@ begin
 	port map (
 		matrix		=> matrix,
 		
+		p_we			=> '0',
 		p_i			=> p_i,
 		p_x			=> p_x,
 		p_y			=> p_y,
 		p_z			=> p_z,
 		
+		t_we			=> '0',
 		t_i			=> t_i,
 		t_a			=> t_a,
 		t_b			=> t_b,
