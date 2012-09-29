@@ -248,7 +248,7 @@ begin
 				end if;
 				
 				if t_pull_in='1' then
-					if t_a/="000000000" or t_b/="000000000" then
+					if t_a/=t_b and t_i_i/="111111111" then
 						t_ready_in <= '1';
 						t_stop_in  <= '0';
 						t_i_i <= t_i_i+1;
