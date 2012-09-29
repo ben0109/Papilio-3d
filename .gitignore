@@ -7,3 +7,15 @@ isim/*
 _xmsgs/*
 iseconfig/*
 
+/data_ram_tb_isim_beh.wdb
+/final.bit
+/points_ram.lso
+/points_ram.stx
+/points_ram_xst.xrpt
+/points_ram.syr
+/webtalk_pn.xml
+/xilinxsim.ini
+/test_preprocess.wcfg
+/points_ram.cmd_log
+/pa.fromNcd.tcl
+/fuse.xmsgs

@@ -216,7 +216,7 @@ begin
 	
 	zbuffer_ram: RAMB16_S18_S18
 	port map (
-		clkA  => clk,
+		clkA  => not clk,
 		ssrA  => '0',
 		enA   => '1',
 		weA   => zbuffer_we,
@@ -226,7 +226,7 @@ begin
 		doA   => open,
 		dopA  => open,
 		
-		clkB  => clk,
+		clkB  => not clk,
 		ssrB  => '0',
 		enB   => '1',
 		weB   => '0',

@@ -304,7 +304,8 @@
 				xr += 128;
 				var z = zl;
 				for (var x=xl; x<xr; x++) {
-					if (zbuffer[x]<z) {
+					var oldz = zbuffer[x];
+					if (oldz<z) {
 						zbuffer[x] = z;
 						cbuffer[x] = color;
 					}
@@ -359,7 +360,7 @@
 				// draw lines
 				var cbuffer = [];
 				var zbuffer = [];
-				for (var y=128-0; y<256; y++) {
+				for (var y=128-128; y<256; y++) {
 					draw_line(screen_triangles, zbuffer,cbuffer,y-128);
 					for (var x=0; x<256; x++) {
 						var c = palette[cbuffer[x]];

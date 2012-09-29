@@ -61,7 +61,7 @@ ARCHITECTURE behavior OF full_pipeline_tb IS
 	signal clk			: STD_LOGIC;
 	signal reset		: STD_LOGIC := '0';
 	signal line_start	: STD_LOGIC := '0';
-	signal y				: STD_LOGIC_VECTOR(9 downto 0) := "0000000000";
+	signal y				: STD_LOGIC_VECTOR(9 downto 0) := "1111000011";
 
 	signal nb_p		: STD_LOGIC_VECTOR ( 8 downto 0);
 	signal p_i		: STD_LOGIC_VECTOR ( 8 downto 0);

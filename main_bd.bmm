@@ -12,7 +12,7 @@
 
 ADDRESS_SPACE triangles RAMB18 WORD_ADDRESSING [0x00000000:0x000007FF]
     BUS_BLOCK
-        triangle_ram_inst/ram [0:8] PLACED = X0Y26;
+        triangle_ram_inst/ram [0:8] PLACED = X0Y22;
     END_BUS_BLOCK;
 END_ADDRESS_SPACE;
 
@@ -25,11 +25,11 @@ END_ADDRESS_SPACE;
 
 ADDRESS_SPACE points RAMB18 WORD_ADDRESSING [0x00000000:0x000007FF]
     BUS_BLOCK
-        points_ram_inst/ram0 [0:17] PLACED = X0Y8;
+        points_ram_inst/ram0 [0:17] PLACED = X0Y26;
     END_BUS_BLOCK;
 
     BUS_BLOCK
-        points_ram_inst/ram1 [0:17] PLACED = X0Y6;
+        points_ram_inst/ram1 [0:17] PLACED = X0Y28;
     END_BUS_BLOCK;
 END_ADDRESS_SPACE;
 
