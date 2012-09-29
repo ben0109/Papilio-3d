@@ -106,7 +106,7 @@ architecture Behavioral of main is
 	signal gpu_clk		: std_logic;
 	signal vga_clk		: std_logic;
 	
-	signal matrix	: STD_LOGIC_VECTOR((16*18-1) downto 0);
+	signal matrix		: STD_LOGIC_VECTOR((16*18-1) downto 0);
 	signal reset		: STD_LOGIC := '1';
 	signal line_start	: STD_LOGIC;
 	signal y				: unsigned(9 downto 0) := "0000000000";
@@ -262,17 +262,17 @@ begin
 			end if;
 		end if;
 	end process;
-	
-	ram_o <= ram_even_o when y(1)='0' else ram_odd_o;
 
 	red   <= ram_o(2) when hcount<640 and vcount<480 else '0';
 	green <= ram_o(1) when hcount<640 and vcount<480 else '0';
 	blue  <= ram_o(0) when hcount<640 and vcount<480 else '0';
+	
+	ram_o <= ram_even_o when y(0)='0' else ram_odd_o;
 
 	ram_even: RAMB16_S9_S9
 	port map (
 		clkA	=> not gpu_clk,
-		enA	=> y(1),
+		enA	=> y(0),
 		weA	=> buffer_we,
 		ssrA	=> '0',
 		addrA	=> "0"&buffer_x,
@@ -282,7 +282,7 @@ begin
 		dopA	=> open,
 
 		clkB	=> vga_clk,
-		enB	=> not y(1),
+		enB	=> not y(0),
 		weB	=> '0',
 		ssrB	=> '0',
 		addrB	=> "00"&std_logic_vector(hcount(9 downto 1)),
@@ -294,7 +294,7 @@ begin
 	ram_odd: RAMB16_S9_S9
 	port map (
 		clkA	=> not gpu_clk,
-		enA	=> not y(1),
+		enA	=> not y(0),
 		weA	=> buffer_we,
 		ssrA	=> '0',
 		addrA	=> "0"&buffer_x,
@@ -304,7 +304,7 @@ begin
 		dopA	=> open,
 
 		clkB	=> vga_clk,
-		enB	=> y(1),
+		enB	=> y(0),
 		weB	=> '0',
 		ssrB	=> '0',
 		addrB	=> "00"&std_logic_vector(hcount(9 downto 1)),
