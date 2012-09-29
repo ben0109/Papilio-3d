@@ -9,13 +9,11 @@ entity full_pipeline is
 port (
 	matrix		: in  STD_LOGIC_VECTOR ((16*18-1) downto 0);
 	
-	nb_p			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	p_i			: out STD_LOGIC_VECTOR ( 8 downto 0);
 	p_x			: in  STD_LOGIC_VECTOR (17 downto 0);
 	p_y			: in  STD_LOGIC_VECTOR (17 downto 0);
 	p_z			: in  STD_LOGIC_VECTOR (17 downto 0);
 	
-	nb_t			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	t_i			: out STD_LOGIC_VECTOR ( 8 downto 0);
 	t_a			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	t_b			: in  STD_LOGIC_VECTOR ( 8 downto 0);
@@ -47,8 +45,6 @@ architecture Behavioral of full_pipeline is
 	component transform_pipeline is
 	port (
 		matrix	: in  STD_LOGIC_VECTOR((16*18-1) downto 0);
-		nb_p		: in  STD_LOGIC_VECTOR ( 8 downto 0);
-		nb_t		: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		
 		clk		: in  STD_LOGIC;
 		reset		: in  STD_LOGIC;
@@ -176,13 +172,11 @@ begin
 		reset		=> reset,
 		stop		=> transform_stop,
 
-		nb_p		=> nb_p,
 		p_i		=> p_i,
 		p_x		=> p_x,
 		p_y		=> p_y,
 		p_z		=> p_z,
 
-		nb_t		=> nb_t,
 		t_i		=> t_i,
 		t_a		=> t_a,
 		t_b		=> t_b,

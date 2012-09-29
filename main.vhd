@@ -23,49 +23,17 @@ architecture Behavioral of main is
 		gpu_clk			: out std_logic;
 		vga_clk			: out std_logic);
 	end component;
-
-	component points_ram is
-	port (
-		clk	: in  STD_LOGIC;
-		i_o	: in  STD_LOGIC_VECTOR ( 8 downto 0);	-- 512 points
-		x_o	: out STD_LOGIC_VECTOR (17 downto 0);
-		y_o	: out STD_LOGIC_VECTOR (17 downto 0);
-		z_o	: out STD_LOGIC_VECTOR (17 downto 0);
-		we		: in  STD_LOGIC;
-		i_i	: in  STD_LOGIC_VECTOR ( 8 downto 0);
-		x_i	: in  STD_LOGIC_VECTOR (17 downto 0);
-		y_i	: in  STD_LOGIC_VECTOR (17 downto 0);
-		z_i	: in  STD_LOGIC_VECTOR (17 downto 0));
-	end component;
-
-	component triangle_ram is
-	port (
-		clk	: in  STD_LOGIC;
-		i_o	: in  STD_LOGIC_VECTOR (8 downto 0);	-- 512 triangles
-		a_o	: out STD_LOGIC_VECTOR (8 downto 0);	-- 512 points
-		b_o	: out STD_LOGIC_VECTOR (8 downto 0);
-		c_o	: out STD_LOGIC_VECTOR (8 downto 0);
-		d_o	: out STD_LOGIC_VECTOR (8 downto 0);		
-		we		: in  STD_LOGIC;
-		i_i	: in  STD_LOGIC_VECTOR (8 downto 0);
-		a_i	: in  STD_LOGIC_VECTOR (8 downto 0);
-		b_i	: in  STD_LOGIC_VECTOR (8 downto 0);
-		c_i	: in  STD_LOGIC_VECTOR (8 downto 0);
-		d_i	: in  STD_LOGIC_VECTOR (8 downto 0));
-	end component;
 	
 	component gpu is
 	port (
 		matrix		: in  STD_LOGIC_VECTOR ((16*18-1) downto 0);
 		
-		nb_p			: in  STD_LOGIC_VECTOR ( 8 downto 0);
-		p_i			: out STD_LOGIC_VECTOR ( 8 downto 0);
+		p_i			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		p_x			: in  STD_LOGIC_VECTOR (17 downto 0);
 		p_y			: in  STD_LOGIC_VECTOR (17 downto 0);
 		p_z			: in  STD_LOGIC_VECTOR (17 downto 0);
 		
-		nb_t			: in  STD_LOGIC_VECTOR ( 8 downto 0);
-		t_i			: out STD_LOGIC_VECTOR ( 8 downto 0);
+		t_i			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		t_a			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		t_b			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		t_c			: in  STD_LOGIC_VECTOR ( 8 downto 0);
@@ -93,13 +61,11 @@ architecture Behavioral of main is
 	signal line_start	: STD_LOGIC;
 	signal y				: unsigned(9 downto 0) := "0000000000";
 
-	signal nb_p			: STD_LOGIC_VECTOR ( 8 downto 0) := "000000111";
 	signal p_i			: STD_LOGIC_VECTOR ( 8 downto 0);
 	signal p_x			: STD_LOGIC_VECTOR (17 downto 0);
 	signal p_y			: STD_LOGIC_VECTOR (17 downto 0);
 	signal p_z			: STD_LOGIC_VECTOR (17 downto 0);
 	
-	signal nb_t			: STD_LOGIC_VECTOR ( 8 downto 0) := "000001011";
 	signal t_i			: STD_LOGIC_VECTOR ( 8 downto 0);
 	signal t_a			: STD_LOGIC_VECTOR ( 8 downto 0);
 	signal t_b			: STD_LOGIC_VECTOR ( 8 downto 0);
@@ -123,13 +89,11 @@ begin
 	port map (
 		matrix		=> matrix,
 		
-		nb_p			=> nb_p,
 		p_i			=> p_i,
 		p_x			=> p_x,
 		p_y			=> p_y,
 		p_z			=> p_z,
 		
-		nb_t			=> nb_t,
 		t_i			=> t_i,
 		t_a			=> t_a,
 		t_b			=> t_b,
@@ -147,34 +111,6 @@ begin
 	
 	test_proj_matrix_inst : test_proj_matrix
 	port map (coefs => matrix);
-
-	triangle_ram_inst: triangle_ram
-	port map (
-		clk	=> not gpu_clk,	
-		i_o	=> t_i,
-		a_o	=> t_a,
-		b_o	=> t_b,
-		c_o	=> t_c,
-		d_o	=> t_d,
-		we		=> '0',
-		i_i	=> (others=>'0'),
-		a_i	=> (others=>'0'),
-		b_i	=> (others=>'0'),
-		c_i	=> (others=>'0'),
-		d_i	=> (others=>'0'));
-	
-	points_ram_inst: points_ram
-	port map (
-		clk	=> not gpu_clk,
-		i_o	=> p_i,
-		x_o	=> p_x,
-		y_o	=> p_y,
-		z_o	=> p_z,
-		we		=> '0',
-		i_i	=> (others=>'0'),
-		x_i	=> (others=>'0'),
-		y_i	=> (others=>'0'),
-		z_i	=> (others=>'0'));
 	
 	process (vga_clk)
 	begin

@@ -10,8 +10,6 @@ use IEEE.NUMERIC_STD.ALL;
 entity transform_pipeline is
 port (
 	matrix	: in  STD_LOGIC_VECTOR((16*18-1) downto 0);
-	nb_p		: in  STD_LOGIC_VECTOR ( 8 downto 0);
-	nb_t		: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	
 	clk		: in  STD_LOGIC;
 	reset		: in  STD_LOGIC;
@@ -235,7 +233,7 @@ begin
 				t_stop_in  <= '0';
 			else				
 				if p_pull_in='1' then
-					if p_i_i<unsigned(nb_p) then
+					if p_i_i/="111111111" then
 						p_ready_in <= '1';
 						p_stop_in  <= '0';
 						p_i_i <= p_i_i+1;
@@ -250,7 +248,7 @@ begin
 				end if;
 				
 				if t_pull_in='1' then
-					if t_i_i<unsigned(nb_t) then
+					if t_a/="000000000" or t_b/="000000000" then
 						t_ready_in <= '1';
 						t_stop_in  <= '0';
 						t_i_i <= t_i_i+1;
