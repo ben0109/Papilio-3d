@@ -1,0 +1,35 @@
+// BMM LOC annotation file.
+//
+// Release 13.4 - (null) O.87xd, build 2.7 Nov 11, 2011
+// Copyright (c) 1995-2012 Xilinx, Inc.  All rights reserved.
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Address space 'triangles' 0x00000000:0x000007FF (2 KWwords).
+//
+///////////////////////////////////////////////////////////////////////////////
+
+ADDRESS_SPACE triangles RAMB18 WORD_ADDRESSING [0x00000000:0x000007FF]
+    BUS_BLOCK
+        triangle_ram_inst/ram [0:8] PLACED = X0Y26;
+    END_BUS_BLOCK;
+END_ADDRESS_SPACE;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Address space 'points' 0x00000000:0x000007FF (2 KWwords).
+//
+///////////////////////////////////////////////////////////////////////////////
+
+ADDRESS_SPACE points RAMB18 WORD_ADDRESSING [0x00000000:0x000007FF]
+    BUS_BLOCK
+        points_ram_inst/ram0 [0:17] PLACED = X0Y8;
+    END_BUS_BLOCK;
+
+    BUS_BLOCK
+        points_ram_inst/ram1 [0:17] PLACED = X0Y6;
+    END_BUS_BLOCK;
+END_ADDRESS_SPACE;
+
