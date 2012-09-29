@@ -54,7 +54,7 @@ architecture Behavioral of main is
 		d_i	: in  STD_LOGIC_VECTOR (8 downto 0));
 	end component;
 	
-	component full_pipeline is
+	component gpu is
 	port (
 		matrix		: in  STD_LOGIC_VECTOR ((16*18-1) downto 0);
 		
@@ -71,36 +71,18 @@ architecture Behavioral of main is
 		t_c			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		t_d			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		
-		clk			: in  STD_LOGIC;
+		gpu_clk		: in  STD_LOGIC;
 		reset			: in  STD_LOGIC;
 		line_start	: in  STD_LOGIC;
 		y				: in  STD_LOGIC_VECTOR ( 9 downto 0);
 		
-		buffer_we	: out STD_LOGIC;
-		buffer_x		: out STD_LOGIC_VECTOR ( 9 downto 0);
-		buffer_d		: out STD_LOGIC_VECTOR ( 8 downto 0));
+		pixel_clk	: in  STD_LOGIC;
+		x				: in  STD_LOGIC_VECTOR ( 9 downto 0);
+		color			: out STD_LOGIC_VECTOR ( 8 downto 0));
 	end component;
 	
 	component test_proj_matrix is
 	port ( coefs : out  STD_LOGIC_VECTOR ((16*18-1) downto 0));
-	end component;
-
-	component test_data is
-	port ( 
-		clk  : in  STD_LOGIC;
-		
-		nb_p : out STD_LOGIC_VECTOR (8 downto 0);
-		p_i  : in  STD_LOGIC_VECTOR (8 downto 0);
-		p_x  : out STD_LOGIC_VECTOR (17 downto 0);
-		p_y  : out STD_LOGIC_VECTOR (17 downto 0);
-		p_z  : out STD_LOGIC_VECTOR (17 downto 0);
-		
-		nb_t : out STD_LOGIC_VECTOR (8 downto 0);
-		t_i  : in  STD_LOGIC_VECTOR (8 downto 0);
-		t_a  : out STD_LOGIC_VECTOR (8 downto 0);
-		t_b  : out STD_LOGIC_VECTOR (8 downto 0);
-		t_c  : out STD_LOGIC_VECTOR (8 downto 0);
-		t_d  : out STD_LOGIC_VECTOR (8 downto 0));
 	end component;
 	
 	signal gpu_clk		: std_logic;
@@ -123,16 +105,10 @@ architecture Behavioral of main is
 	signal t_b			: STD_LOGIC_VECTOR ( 8 downto 0);
 	signal t_c			: STD_LOGIC_VECTOR ( 8 downto 0);
 	signal t_d			: STD_LOGIC_VECTOR ( 8 downto 0);
-		
-	signal buffer_we	: STD_LOGIC;
-	signal buffer_x	: STD_LOGIC_VECTOR ( 9 downto 0);
-	signal buffer_d	: STD_LOGIC_VECTOR ( 8 downto 0);
 
 	signal vcount		: unsigned(9 downto 0) := "0111011111"; -- 479
 	signal hcount		: unsigned(9 downto 0) := (others=>'0');
 	
-	signal ram_even_o	: std_logic_vector(8 downto 0);
-	signal ram_odd_o	: std_logic_vector(8 downto 0);
 	signal ram_o		: std_logic_vector(8 downto 0);
 
 begin
@@ -143,7 +119,7 @@ begin
 		gpu_clk		=> gpu_clk,
 		vga_clk		=> vga_clk);
 
-	full_pipeline_inst: full_pipeline
+	gpu_inst: gpu
 	port map (
 		matrix		=> matrix,
 		
@@ -160,33 +136,17 @@ begin
 		t_c			=> t_c,
 		t_d			=> t_d,
 		
-		clk			=> gpu_clk,
+		gpu_clk		=> gpu_clk,
 		reset			=> reset,
 		line_start	=> line_start,
 		y				=> std_logic_vector(y),
 		
-		buffer_we	=> buffer_we,
-		buffer_x		=> buffer_x,
-		buffer_d		=> buffer_d);
+		pixel_clk	=> vga_clk,
+		x				=> "0"&std_logic_vector(hcount(9 downto 1)),
+		color			=> ram_o);
 	
 	test_proj_matrix_inst : test_proj_matrix
 	port map (coefs => matrix);
-	
---	data_inst: test_data
---	port map ( 
---		clk  => gpu_clk,		
---		nb_p => nb_p,
---		p_i  => p_i,
---		p_x  => p_x,
---		p_y  => p_y,
---		p_z  => p_z,
---		
---		nb_t => nb_t,
---		t_i  => t_i,
---		t_a  => t_a,
---		t_b  => t_b,
---		t_c  => t_c,
---		t_d  => t_d );
 
 	triangle_ram_inst: triangle_ram
 	port map (
@@ -266,52 +226,6 @@ begin
 	red   <= ram_o(2) when hcount<640 and vcount<480 else '0';
 	green <= ram_o(1) when hcount<640 and vcount<480 else '0';
 	blue  <= ram_o(0) when hcount<640 and vcount<480 else '0';
-	
-	ram_o <= ram_even_o when y(0)='0' else ram_odd_o;
-
-	ram_even: RAMB16_S9_S9
-	port map (
-		clkA	=> not gpu_clk,
-		enA	=> y(0),
-		weA	=> buffer_we,
-		ssrA	=> '0',
-		addrA	=> "0"&buffer_x,
-		diA	=> buffer_d(7 downto 0),
-		dipA	=> buffer_d(8 downto 8),
-		doA	=> open,
-		dopA	=> open,
-
-		clkB	=> vga_clk,
-		enB	=> not y(0),
-		weB	=> '0',
-		ssrB	=> '0',
-		addrB	=> "00"&std_logic_vector(hcount(9 downto 1)),
-		diB	=> (others=>'0'),
-		dipB	=> (others=>'0'),
-		doB	=> ram_even_o(7 downto 0),
-		dopB	=> ram_even_o(8 downto 8));
-	
-	ram_odd: RAMB16_S9_S9
-	port map (
-		clkA	=> not gpu_clk,
-		enA	=> not y(0),
-		weA	=> buffer_we,
-		ssrA	=> '0',
-		addrA	=> "0"&buffer_x,
-		diA	=> buffer_d(7 downto 0),
-		dipA	=> buffer_d(8 downto 8),
-		doA	=> open,
-		dopA	=> open,
-
-		clkB	=> vga_clk,
-		enB	=> y(0),
-		weB	=> '0',
-		ssrB	=> '0',
-		addrB	=> "00"&std_logic_vector(hcount(9 downto 1)),
-		diB	=> (others=>'0'),
-		dipB	=> (others=>'0'),
-		doB	=> ram_odd_o(7 downto 0),
-		dopB	=> ram_odd_o(8 downto 8));
 	
 end Behavioral;
 
