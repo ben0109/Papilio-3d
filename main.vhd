@@ -21,7 +21,9 @@ architecture Behavioral of main is
 	port (
 		papilio_clk		: in  std_logic;
 		gpu_clk			: out std_logic;
-		vga_clk			: out std_logic);
+		gpu_clk_n		: out std_logic;
+		vga_clk			: out std_logic;
+		vga_clk_n		: out std_logic);
 	end component;
 	
 	component gpu is
@@ -42,21 +44,33 @@ architecture Behavioral of main is
 		t_d			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		
 		gpu_clk		: in  STD_LOGIC;
+		gpu_clk_n	: in  STD_LOGIC;
 		reset			: in  STD_LOGIC;
 		line_start	: in  STD_LOGIC;
 		y				: in  STD_LOGIC_VECTOR ( 9 downto 0);
 		
 		pixel_clk	: in  STD_LOGIC;
+		pixel_clk_n	: in  STD_LOGIC;
 		x				: in  STD_LOGIC_VECTOR ( 9 downto 0);
 		color			: out STD_LOGIC_VECTOR ( 8 downto 0));
 	end component;
 	
-	component test_proj_matrix is
-	port ( coefs : out  STD_LOGIC_VECTOR ((16*18-1) downto 0));
+--	component test_proj_matrix is
+--	port ( coefs : out  STD_LOGIC_VECTOR ((16*18-1) downto 0));
+--	end component;
+
+	component proj_matrices is
+	port (
+		clk	: in  STD_LOGIC;
+		clk_n	: in  STD_LOGIC;
+		vbl	: in  STD_LOGIC;
+		coefs	: out STD_LOGIC_VECTOR ((16*18-1) downto 0));
 	end component;
 	
 	signal gpu_clk		: std_logic;
+	signal gpu_clk_n	: std_logic;
 	signal vga_clk		: std_logic;
+	signal vga_clk_n	: std_logic;
 	
 	signal matrix		: STD_LOGIC_VECTOR((16*18-1) downto 0);
 	signal reset		: STD_LOGIC := '1';
@@ -85,7 +99,9 @@ begin
 	port map (
 		papilio_clk	=> papilio_clk,
 		gpu_clk		=> gpu_clk,
-		vga_clk		=> vga_clk);
+		gpu_clk_n	=> gpu_clk_n,
+		vga_clk		=> vga_clk,
+		vga_clk_n	=> vga_clk_n);
 
 	gpu_inst: gpu
 	port map (
@@ -105,16 +121,25 @@ begin
 		t_d			=> t_d,
 		
 		gpu_clk		=> gpu_clk,
+		gpu_clk_n	=> gpu_clk_n,
 		reset			=> reset,
 		line_start	=> line_start,
 		y				=> std_logic_vector(y),
 		
 		pixel_clk	=> vga_clk,
+		pixel_clk_n	=> vga_clk_n,
 		x				=> "0"&std_logic_vector(hcount(9 downto 1)),
 		color			=> ram_o);
 	
-	test_proj_matrix_inst : test_proj_matrix
-	port map (coefs => matrix);
+--	test_proj_matrix_inst : test_proj_matrix
+--	port map (coefs => matrix);
+
+	proj_matrices_inst : proj_matrices
+	port map (
+		clk	=> vga_clk,
+		clk_n	=> vga_clk_n,
+		vbl	=> reset,
+		coefs => matrix);
 	
 	process (vga_clk)
 	begin

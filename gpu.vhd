@@ -22,11 +22,13 @@ port (
 	t_d			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	
 	gpu_clk		: in  STD_LOGIC;
+	gpu_clk_n	: in  STD_LOGIC;
 	y				: in  STD_LOGIC_VECTOR ( 9 downto 0);
 	line_start	: in  STD_LOGIC;
 	reset			: in  STD_LOGIC;
 	
 	pixel_clk	: in  STD_LOGIC;
+	pixel_clk_n	: in  STD_LOGIC;
 	x				: in  STD_LOGIC_VECTOR ( 9 downto 0);
 	color			: out STD_LOGIC_VECTOR ( 8 downto 0));
 end gpu;
@@ -49,6 +51,7 @@ architecture Behavioral of gpu is
 		t_d			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		
 		clk			: in  STD_LOGIC;
+		clk_n			: in  STD_LOGIC;
 		reset			: in  STD_LOGIC;
 		line_start	: in  STD_LOGIC;
 		y				: in  STD_LOGIC_VECTOR ( 9 downto 0);
@@ -124,6 +127,7 @@ begin
 		t_d			=> int_t_d,
 		
 		clk			=> gpu_clk,
+		clk_n			=> gpu_clk_n,
 		reset			=> reset,
 		line_start	=> line_start,
 		y				=> STD_LOGIC_VECTOR(y),
@@ -134,7 +138,7 @@ begin
 
 	triangle_ram_inst: triangle_ram
 	port map (
-		clk	=> not gpu_clk,
+		clk	=> gpu_clk_n,
 		
 		i_o	=> int_t_i,
 		a_o	=> int_t_a,
@@ -151,7 +155,7 @@ begin
 	
 	points_ram_inst: points_ram
 	port map (
-		clk	=> not gpu_clk,
+		clk	=> gpu_clk_n,
 		
 		i_o	=> int_p_i,
 		x_o	=> int_p_x,
@@ -168,7 +172,7 @@ begin
 
 	ram_even: RAMB16_S9_S9
 	port map (
-		clkA	=> not gpu_clk,
+		clkA	=> gpu_clk_n,
 		enA	=> y(0),
 		weA	=> buffer_we,
 		ssrA	=> '0',
@@ -178,7 +182,7 @@ begin
 		doA	=> open,
 		dopA	=> open,
 
-		clkB	=> not pixel_clk,
+		clkB	=> pixel_clk_n,
 		enB	=> not y(0),
 		weB	=> '0',
 		ssrB	=> '0',
@@ -190,7 +194,7 @@ begin
 	
 	ram_odd: RAMB16_S9_S9
 	port map (
-		clkA	=> not gpu_clk,
+		clkA	=> gpu_clk_n,
 		enA	=> not y(0),
 		weA	=> buffer_we,
 		ssrA	=> '0',
@@ -200,7 +204,7 @@ begin
 		doA	=> open,
 		dopA	=> open,
 
-		clkB	=> not pixel_clk,
+		clkB	=> pixel_clk_n,
 		enB	=> y(0),
 		weB	=> '0',
 		ssrB	=> '0',

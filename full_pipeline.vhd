@@ -21,6 +21,7 @@ port (
 	t_d			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 	
 	clk			: in  STD_LOGIC;
+	clk_n			: in  STD_LOGIC;
 	reset			: in  STD_LOGIC;
 	line_start	: in  STD_LOGIC;
 	y				: in  STD_LOGIC_VECTOR ( 9 downto 0);
