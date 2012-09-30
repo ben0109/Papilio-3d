@@ -12,7 +12,7 @@
 
 ADDRESS_SPACE triangles RAMB18 WORD_ADDRESSING [0x00000000:0x000007FF]
     BUS_BLOCK
-        gpu_inst/triangle_ram_inst/ram [0:8] PLACED = X0Y24;
+        gpu_inst/triangle_ram_inst/ram [0:8] PLACED = X1Y16;
     END_BUS_BLOCK;
 END_ADDRESS_SPACE;
 
@@ -25,11 +25,11 @@ END_ADDRESS_SPACE;
 
 ADDRESS_SPACE points RAMB18 WORD_ADDRESSING [0x00000000:0x000007FF]
     BUS_BLOCK
-        gpu_inst/points_ram_inst/ram0 [0:17] PLACED = X0Y28;
+        gpu_inst/points_ram_inst/ram0 [0:17] PLACED = X0Y16;
     END_BUS_BLOCK;
 
     BUS_BLOCK
-        gpu_inst/points_ram_inst/ram1 [0:17] PLACED = X0Y30;
+        gpu_inst/points_ram_inst/ram1 [0:17] PLACED = X0Y18;
     END_BUS_BLOCK;
 END_ADDRESS_SPACE;
 
