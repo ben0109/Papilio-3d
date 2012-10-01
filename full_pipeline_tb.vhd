@@ -11,13 +11,11 @@ ARCHITECTURE behavior OF full_pipeline_tb IS
 	port (
 		matrix		: in  STD_LOGIC_VECTOR ((16*18-1) downto 0);
 		
-		nb_p			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		p_i			: out STD_LOGIC_VECTOR ( 8 downto 0);
 		p_x			: in  STD_LOGIC_VECTOR (17 downto 0);
 		p_y			: in  STD_LOGIC_VECTOR (17 downto 0);
 		p_z			: in  STD_LOGIC_VECTOR (17 downto 0);
 		
-		nb_t			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		t_i			: out STD_LOGIC_VECTOR ( 8 downto 0);
 		t_a			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		t_b			: in  STD_LOGIC_VECTOR ( 8 downto 0);
@@ -25,6 +23,7 @@ ARCHITECTURE behavior OF full_pipeline_tb IS
 		t_d			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		
 		clk			: in  STD_LOGIC;
+		clk_n			: in  STD_LOGIC;
 		reset			: in  STD_LOGIC;
 		line_start	: in  STD_LOGIC;
 		y				: in  STD_LOGIC_VECTOR ( 9 downto 0);
@@ -42,13 +41,11 @@ ARCHITECTURE behavior OF full_pipeline_tb IS
 	port ( 
 		clk  : in  STD_LOGIC;
 		
-		nb_p : out STD_LOGIC_VECTOR (8 downto 0);
 		p_i  : in  STD_LOGIC_VECTOR (8 downto 0);
 		p_x  : out STD_LOGIC_VECTOR (17 downto 0);
 		p_y  : out STD_LOGIC_VECTOR (17 downto 0);
 		p_z  : out STD_LOGIC_VECTOR (17 downto 0);
 		
-		nb_t : out STD_LOGIC_VECTOR (8 downto 0);
 		t_i  : in  STD_LOGIC_VECTOR (8 downto 0);
 		t_a  : out STD_LOGIC_VECTOR (8 downto 0);
 		t_b  : out STD_LOGIC_VECTOR (8 downto 0);
@@ -63,13 +60,11 @@ ARCHITECTURE behavior OF full_pipeline_tb IS
 	signal line_start	: STD_LOGIC := '0';
 	signal y				: STD_LOGIC_VECTOR(9 downto 0) := "1111000011";
 
-	signal nb_p		: STD_LOGIC_VECTOR ( 8 downto 0);
 	signal p_i		: STD_LOGIC_VECTOR ( 8 downto 0);
 	signal p_x		: STD_LOGIC_VECTOR (17 downto 0);
 	signal p_y		: STD_LOGIC_VECTOR (17 downto 0);
 	signal p_z		: STD_LOGIC_VECTOR (17 downto 0);
 	
-	signal nb_t		: STD_LOGIC_VECTOR ( 8 downto 0);
 	signal t_i		: STD_LOGIC_VECTOR ( 8 downto 0);
 	signal t_a		: STD_LOGIC_VECTOR ( 8 downto 0);
 	signal t_b		: STD_LOGIC_VECTOR ( 8 downto 0);
@@ -89,13 +84,11 @@ BEGIN
 	port map (
 		matrix		=> matrix,
 		
-		nb_p			=> nb_p,
 		p_i			=> p_i,
 		p_x			=> p_x,
 		p_y			=> p_y,
 		p_z			=> p_z,
 		
-		nb_t			=> nb_t,
 		t_i			=> t_i,
 		t_a			=> t_a,
 		t_b			=> t_b,
@@ -103,6 +96,7 @@ BEGIN
 		t_d			=> t_d,
 		
 		clk			=> clk,
+		clk_n			=> not clk,
 		reset			=> reset,
 		line_start	=> line_start,
 		y				=> y,
@@ -118,13 +112,11 @@ BEGIN
 	port map ( 
 		clk  => clk,
 		
-		nb_p => nb_p,
 		p_i  => p_i,
 		p_x  => p_x,
 		p_y  => p_y,
 		p_z  => p_z,
 		
-		nb_t => nb_t,
 		t_i  => t_i,
 		t_a  => t_a,
 		t_b  => t_b,

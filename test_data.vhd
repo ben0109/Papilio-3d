@@ -6,13 +6,11 @@ entity test_data is
 port ( 
 	clk  : in  STD_LOGIC;
 	
-	nb_p : out STD_LOGIC_VECTOR (8 downto 0);
 	p_i  : in  STD_LOGIC_VECTOR (8 downto 0);
 	p_x  : out STD_LOGIC_VECTOR (17 downto 0);
 	p_y  : out STD_LOGIC_VECTOR (17 downto 0);
 	p_z  : out STD_LOGIC_VECTOR (17 downto 0);
 	
-	nb_t : out STD_LOGIC_VECTOR (8 downto 0);
 	t_i  : in  STD_LOGIC_VECTOR (8 downto 0);
 	t_a  : out STD_LOGIC_VECTOR (8 downto 0);
 	t_b  : out STD_LOGIC_VECTOR (8 downto 0);
@@ -23,9 +21,6 @@ end test_data;
 architecture Behavioral of test_data is
 
 begin
-
-	nb_p <= "000000111";
-	nb_t <= "000001011";
 
 	with p_i(2) select
 	p_x <=	"111111111100000000" when '0',
@@ -52,7 +47,8 @@ begin
 								"010" when "1000",
 								"010" when "1001",
 								"001" when "1010",
-								"001" when others;
+								"001" when "1011",
+								"000" when others;
 	t_a(8 downto 3) <= (others=>'0');
 								
 	with t_i(3 downto 0) select
@@ -67,7 +63,8 @@ begin
 								"011" when "1000",
 								"111" when "1001",
 								"011" when "1010",
-								"111" when others;
+								"111" when "1011",
+								"000" when others;
 	t_b(8 downto 3) <= (others=>'0');
 								
 	with t_i(3 downto 0) select
@@ -82,7 +79,8 @@ begin
 								"111" when "1000",
 								"110" when "1001",
 								"111" when "1010",
-								"101" when others;
+								"101" when "1011",
+								"000" when others;
 	t_c(8 downto 3) <= (others=>'0');
 
 	t_d(8) <= '0';

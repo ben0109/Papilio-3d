@@ -128,22 +128,28 @@ architecture Behavioral of triangle_transform is
 	signal pull_in_int : std_logic;
 	signal queue : std_logic_vector((DIVIDER_LATENCY+13) downto 0);
 	constant EMPTY : std_logic_vector(queue'range) := (others=>'0');
+	
+	signal mul_a		: std_logic_vector(17 downto 0);
+	signal mul_b		: std_logic_vector(17 downto 0);
+	signal mul_o		: std_logic_vector(17 downto 0) := (others=>'0');
+	signal mul_reset	: std_logic;
 
 begin
 		
 	pull_in <= (ready_in and not reset) when queue(5 downto 0)="100000" else '0';
 	stop_out <= stop_in when queue=EMPTY else '0';
-	
+
 	process (clk)
 	begin
 		if rising_edge(clk) then
 			if reset='1' then
 				queue <= (others=>'0');
 			elsif queue(DIVIDER_LATENCY+12)='0' or pull_out='1' then
+				queue((queue'length-1) downto 1) <= queue((queue'length-2) downto 0);
 				if queue(4 downto 0)="00000" then
-					queue <= queue((queue'length-2) downto 0) & ready_in;
+					queue(0) <= ready_in;
 				else
-					queue <= queue((queue'length-2) downto 0) & '0';
+					queue(0) <= '0';
 				end if;
 
 				-- read point data
@@ -322,7 +328,12 @@ begin
 						dzl <= dz02;
 					end if;
 					color <= color_6;
-					if y0_6(17 downto 8)=y1_6(17 downto 8) then ready_out <= '0'; else ready_out <= '1'; end if;
+--					if y0_6(17 downto 8)=y1_6(17 downto 8) then
+					if signed(y1_6)-signed(y0_6)<256 then
+						ready_out <= '0';
+					else
+						ready_out <= '1';
+					end if;
 				when "10" =>
 					y0 <= y1_6(17 downto 8);
 					y1 <= y2_6(17 downto 8);
@@ -341,7 +352,12 @@ begin
 						dzl <= dz12;
 					end if;
 					color <= color_6;
-					if y1_6(17 downto 8)=y2_6(17 downto 8) then ready_out <= '0'; else ready_out <= '1'; end if;
+--					if y1_6(17 downto 8)=y2_6(17 downto 8) then
+					if signed(y2_6)-signed(y1_6)<256 then
+						ready_out <= '0';
+					else
+						ready_out <= '1';
+					end if;
 				when others =>
 					ready_out <= '0';
 				end case;
