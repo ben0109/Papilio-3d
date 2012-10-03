@@ -269,7 +269,7 @@ begin
 	
 	points_ram_inst: points_ram
 	port map (
-		clk	=> not clk,
+		clk	=> clk,
 		i_o	=> sp_i_i,
 		x_o	=> sp_x_i,
 		y_o	=> sp_y_i,

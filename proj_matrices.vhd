@@ -8,7 +8,6 @@ use UNISIM.VComponents.all;
 entity proj_matrices is
 port (
 	clk	: in  STD_LOGIC;
-	clk_n	: in  STD_LOGIC;
 	vbl	: in  STD_LOGIC;
 	coefs	: out STD_LOGIC_VECTOR ((16*18-1) downto 0));
 end proj_matrices;
@@ -121,7 +120,7 @@ begin
 		INIT_3e => x"f600ff24007affd5e8abfef30096ffcb00000259046300770000ff07000004e7",
 		INIT_3f => x"f600ff21007affeae8abfeef0096ffe6000002620463003c0000ff83000004f9")
 	port map (
-		clk	=> clk_n,
+		clk	=> not clk,
 		ssr	=> '0',
 		en		=> '1',
 		addr	=> std_logic_vector(i),

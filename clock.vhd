@@ -8,9 +8,7 @@ entity clock is
 port (
 	papilio_clk	: in  std_logic;
 	gpu_clk		: out std_logic;
-	gpu_clk_n	: out std_logic;
-	vga_clk		: out std_logic;
-	vga_clk_n	: out std_logic);
+	vga_clk		: out std_logic);
 end clock;
 
 architecture BEHAVIORAL of clock is
@@ -23,9 +21,7 @@ architecture BEHAVIORAL of clock is
    signal CLKFB_IN2		: std_logic;
    signal CLK2X_BUF2		: std_logic;
    signal CLK_BUF2		: std_logic;
-   signal CLK180_BUF2	: std_logic;
    signal CLKFX_BUF2		: std_logic;
-   signal CLKFX180_BUF2	: std_logic;
 	
 begin
 
@@ -96,21 +92,11 @@ begin
 	port map (
 		I=>CLK_BUF2,
 		O=>vga_clk);
-	
-   CLK180_BUFG_INST2 : BUFG
-	port map (
-		I=>CLK180_BUF2,
-		O=>vga_clk_n);
-	
+		
    CLKFX_BUFG_INST2 : BUFG
 	port map (
 		I=>CLKFX_BUF2,
 		O=>gpu_clk);
-	
-   CLKFX180_BUFG_INST2 : BUFG
-	port map (
-		I=>CLKFX180_BUF2,
-		O=>gpu_clk_n);
 		
    
    DCM_SP_INST2 : DCM_SP
@@ -145,11 +131,11 @@ begin
 		
 		CLK0		=> CLK_BUF2,
 		CLK90		=> open,
-		CLK180	=> CLK180_BUF2,
+		CLK180	=> open,
 		CLK270	=> open,
 		CLKDV		=> open,
 		CLKFX		=> CLKFX_BUF2,
-		CLKFX180	=> CLKFX180_BUF2,
+		CLKFX180	=> open,
 		CLK2X		=> CLK2X_BUF2,
 		CLK2X180	=> open);
    

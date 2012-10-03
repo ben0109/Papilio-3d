@@ -38,15 +38,12 @@ NET "vsync" IOSTANDARD = LVTTL;
 NET "vsync" LOC = P48;
 NET "hsync" IOSTANDARD = LVTTL;
 NET "hsync" LOC = P51;
-NET "blue" IOSTANDARD = LVTTL;
-NET "blue" LOC = P56;
+#NET A(2)			LOC="P56"  | IOSTANDARD=LVTTL ;
 #NET A(3)			LOC="P58"  | IOSTANDARD=LVTTL ;
 #NET A(4)			LOC="P61"  | IOSTANDARD=LVTTL ;
 #NET A(5)			LOC="P66"  | IOSTANDARD=LVTTL ;
-NET "green" IOSTANDARD = LVTTL;
-NET "green" LOC = P67;
-NET "red" IOSTANDARD = LVTTL;
-NET "red" LOC = P75;
+#NET A(6)			LOC="P67"  | IOSTANDARD=LVTTL ;
+#NET A(7)			LOC="P75"  | IOSTANDARD=LVTTL ;
 
 #NET A(8)			LOC="P79"  | IOSTANDARD=LVTTL;                                # A8
 #NET A(9)			LOC="P81"  | IOSTANDARD=LVTTL;                                # A9
@@ -57,15 +54,14 @@ NET "red" LOC = P75;
 #NET A(14)			LOC="P98"  | IOSTANDARD=LVTTL;                                # A14
 #NET A(15)			LOC="P100" | IOSTANDARD=LVTTL;                                # A15
 
-#NET B(0)			LOC="P99"  | IOSTANDARD=LVTTL;                                # B0
-#NET B(1)			LOC="P97"  | IOSTANDARD=LVTTL;                                # B1
-#NET B(2)			LOC="P92"  | IOSTANDARD=LVTTL;                                # B2
-#NET B(3)			LOC="P87"  | IOSTANDARD=LVTTL;                                # B3
-#NET B(4)			LOC="P84"  | IOSTANDARD=LVTTL;                                # B4
-#NET B(5)			LOC="P82"  | IOSTANDARD=LVTTL;                                # B5
-#NET B(6)			LOC="P80"  | IOSTANDARD=LVTTL;                                # B6
-#NET B(7)			LOC="P78"  | IOSTANDARD=LVTTL;                                # B7
-
+NET "blue(0)"		LOC="P99"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # B0
+NET "blue(1)"		LOC="P97"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # B1
+NET "blue(2)"		LOC="P92"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # B2
+NET "blue(3)"		LOC="P87"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # B3
+NET "green(0)"		LOC="P84"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # B4
+NET "green(1)"		LOC="P82"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # B5
+NET "green(2)"		LOC="P80"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # B6
+NET "green(3)"		LOC="P78"  | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # B7
 #NET B(8)			LOC="P74"  | IOSTANDARD=LVTTL;                                # B8
 #NET B(9)			LOC="P95"  | IOSTANDARD=LVTTL;                                # B9
 #NET B(10)			LOC="P62"  | IOSTANDARD=LVTTL;                                # B10
@@ -75,23 +71,22 @@ NET "red" LOC = P75;
 #NET B(14)			LOC="P50"  | IOSTANDARD=LVTTL;                                # B14
 #NET B(15)			LOC="P47"  | IOSTANDARD=LVTTL;                                # B15
 
-#NET C(0)     LOC="P114" | IOSTANDARD=LVTTL;                                # C0
-#NET C(1)     LOC="P115" | IOSTANDARD=LVTTL;                                # C1
-#NET C(2)     LOC="P116" | IOSTANDARD=LVTTL;                                # C2
-#NET C(3)     LOC="P117" | IOSTANDARD=LVTTL;                                # C3
-#NET C(4)     LOC="P118" | IOSTANDARD=LVTTL;                                # C4
-#NET C(5)     LOC="P119" | IOSTANDARD=LVTTL;                                # C5
-#NET C(6)     LOC="P120" | IOSTANDARD=LVTTL;                                # C6
-#NET C(7)     LOC="P121" | IOSTANDARD=LVTTL;                                # C7
-
-#NET C(8)     LOC="P123" | IOSTANDARD=LVTTL;                                # C8
-#NET C(9)     LOC="P124" | IOSTANDARD=LVTTL;                                # C9
-#NET C(10)    LOC="P126" | IOSTANDARD=LVTTL;                                # C10
-#NET C(11)    LOC="P127" | IOSTANDARD=LVTTL;                                # C11
-#NET C(12)    LOC="P131" | IOSTANDARD=LVTTL;                                # C12
-#NET C(13)    LOC="P132" | IOSTANDARD=LVTTL;                                # C13
-#NET C(14)    LOC="P133" | IOSTANDARD=LVTTL;                                # C14
-#NET C(15)    LOC="P134" | IOSTANDARD=LVTTL;                                # C15
+#NET C(0)     LOC="P114" | IOSTANDARD=LVTTL;                               	  # C0
+#NET C(1)     LOC="P115" | IOSTANDARD=LVTTL;                                	  # C1
+NET "vsync"			LOC="P116" | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # C2
+NET "hsync"			LOC="P117" | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # C3
+NET "red(0)"		LOC="P118" | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # C4
+NET "red(1)"		LOC="P119" | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # C5
+NET "red(2)"		LOC="P120" | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # C6
+NET "red(3)"		LOC="P121" | IOSTANDARD=LVTTL | DRIVE=8 | SLEW=FAST;          # C7
+#NET C(8)     LOC="P123" | IOSTANDARD=LVTTL;                            	     # C8
+#NET C(9)     LOC="P124" | IOSTANDARD=LVTTL;                            	     # C9
+#NET C(10)    LOC="P126" | IOSTANDARD=LVTTL;                            	     # C10
+#NET C(11)    LOC="P127" | IOSTANDARD=LVTTL;                            	     # C11
+#NET C(12)    LOC="P131" | IOSTANDARD=LVTTL;                            	     # C12
+#NET C(13)    LOC="P132" | IOSTANDARD=LVTTL;                            	     # C13
+#NET C(14)    LOC="P133" | IOSTANDARD=LVTTL;                            	     # C14
+#NET C(15)    LOC="P134" | IOSTANDARD=LVTTL;                            	     # C15
 
 #NET ram_a(0)  LOC="P7"   | IOSTANDARD=LVTTL;                                # ADDR0
 #NET ram_a(1)  LOC="P6"   | IOSTANDARD=LVTTL;                                # ADDR1

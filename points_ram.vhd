@@ -52,7 +52,7 @@ begin
 		INIT_00 => X"0100010001000100ff000100ff0001000100ff000100ff00ff00ff00ff00ff00",
 		INITP_00 => X"0000000000000000000000000000000000000000000000000000000000cc33ff" )
 	port map (
-		clkA => clk,
+		clkA => not clk,
 		ssrA => '0',
 		enA => '1',
 		weA => we,
@@ -62,7 +62,7 @@ begin
 		doA => open,
 		dopA => open,
 
-		clkB => clk,
+		clkB => not clk,
 		ssrB => '0',
 		enB => '1',
 		weB => '0',
@@ -77,7 +77,7 @@ begin
 		INIT_00 => X"000001000000ff00000001000000ff00000001000000ff00000001000000ff00",
 		INITP_00 => X"0000000000000000000000000000000000000000000000000000000003030303" )
 	port map (
-		clkA => clk,
+		clkA => not clk,
 		ssrA => '0',
 		enA => '1',
 		weA => we,
@@ -87,7 +87,7 @@ begin
 		doA => open,
 		dopA => open,
 
-		clkB => clk,
+		clkB => not clk,
 		ssrB => '0',
 		enB => '1',
 		weB => '0',

@@ -10,9 +10,9 @@ port (
 	papilio_clk	: in  STD_LOGIC;
 	hsync			: out STD_LOGIC;
 	vsync			: out STD_LOGIC;
-	red			: out STD_LOGIC;
-	green			: out STD_LOGIC;
-	blue			: out STD_LOGIC);
+	red			: out STD_LOGIC_VECTOR(3 downto 0);
+	green			: out STD_LOGIC_VECTOR(3 downto 0);
+	blue			: out STD_LOGIC_VECTOR(3 downto 0));
 end main;
 
 architecture Behavioral of main is
@@ -21,9 +21,7 @@ architecture Behavioral of main is
 	port (
 		papilio_clk		: in  std_logic;
 		gpu_clk			: out std_logic;
-		gpu_clk_n		: out std_logic;
-		vga_clk			: out std_logic;
-		vga_clk_n		: out std_logic);
+		vga_clk			: out std_logic);
 	end component;
 	
 	component gpu is
@@ -44,13 +42,11 @@ architecture Behavioral of main is
 		t_d			: in  STD_LOGIC_VECTOR ( 8 downto 0);
 		
 		gpu_clk		: in  STD_LOGIC;
-		gpu_clk_n	: in  STD_LOGIC;
 		reset			: in  STD_LOGIC;
 		line_start	: in  STD_LOGIC;
 		y				: in  STD_LOGIC_VECTOR ( 9 downto 0);
 		
 		pixel_clk	: in  STD_LOGIC;
-		pixel_clk_n	: in  STD_LOGIC;
 		x				: in  STD_LOGIC_VECTOR ( 9 downto 0);
 		color			: out STD_LOGIC_VECTOR ( 8 downto 0));
 	end component;
@@ -62,15 +58,12 @@ architecture Behavioral of main is
 	component proj_matrices is
 	port (
 		clk	: in  STD_LOGIC;
-		clk_n	: in  STD_LOGIC;
 		vbl	: in  STD_LOGIC;
 		coefs	: out STD_LOGIC_VECTOR ((16*18-1) downto 0));
 	end component;
 	
 	signal gpu_clk		: std_logic;
-	signal gpu_clk_n	: std_logic;
 	signal vga_clk		: std_logic;
-	signal vga_clk_n	: std_logic;
 	
 	signal matrix		: STD_LOGIC_VECTOR((16*18-1) downto 0);
 	signal reset		: STD_LOGIC := '1';
@@ -99,9 +92,7 @@ begin
 	port map (
 		papilio_clk	=> papilio_clk,
 		gpu_clk		=> gpu_clk,
-		gpu_clk_n	=> gpu_clk_n,
-		vga_clk		=> vga_clk,
-		vga_clk_n	=> vga_clk_n);
+		vga_clk		=> vga_clk);
 
 	gpu_inst: gpu
 	port map (
@@ -121,13 +112,11 @@ begin
 		t_d			=> t_d,
 		
 		gpu_clk		=> gpu_clk,
-		gpu_clk_n	=> gpu_clk_n,
 		reset			=> reset,
 		line_start	=> line_start,
 		y				=> std_logic_vector(y),
 		
 		pixel_clk	=> vga_clk,
-		pixel_clk_n	=> vga_clk_n,
 		x				=> "0"&std_logic_vector(hcount(9 downto 1)),
 		color			=> ram_o);
 	
@@ -137,7 +126,6 @@ begin
 	proj_matrices_inst : proj_matrices
 	port map (
 		clk	=> vga_clk,
-		clk_n	=> vga_clk_n,
 		vbl	=> reset,
 		coefs => matrix);
 	
@@ -188,9 +176,12 @@ begin
 		end if;
 	end process;
 
-	red   <= ram_o(2) when hcount<640 and vcount<480 else '0';
-	green <= ram_o(1) when hcount<640 and vcount<480 else '0';
-	blue  <= ram_o(0) when hcount<640 and vcount<480 else '0';
+	red(3 downto 1)   <= ram_o(8 downto 6) when hcount<640 and vcount<480 else (others=>'0');
+	green(3 downto 1) <= ram_o(5 downto 3) when hcount<640 and vcount<480 else (others=>'0');
+	blue(3 downto 1)  <= ram_o(2 downto 0) when hcount<640 and vcount<480 else (others=>'0');
+	red(0)   <= '0';
+	green(0) <= '0';
+	blue(0)  <= '0';
 	
 end Behavioral;
 
